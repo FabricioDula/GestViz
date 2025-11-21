@@ -1,0 +1,447 @@
+/* Reset / layout básico */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+  color: #111111;
+}
+
+/* Barra superior */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #111111;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.logo-text {
+  color: #111111;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Iconos Material */
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  font-size: 18px;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* Navegación SPA (tabs) */
+.spa-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.spa-tab-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: #555555;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.spa-tab-label:hover {
+  color: #111111;
+  border-color: #dddddd;
+  background: #f5f5f5;
+}
+
+/* Escondemos los radios */
+.spa-tab-radio {
+  display: none;
+}
+
+/* Contenedor principal */
+.spa-main {
+  max-width: 1100px;
+  margin: 1rem auto 2rem;
+  padding: 0 1rem;
+}
+
+/* Páginas SPA */
+.page {
+  display: none;
+}
+
+/* Mostrar la página correspondiente al tab seleccionado */
+#tab-edificios:checked ~ .spa-main .page-edificios { display: block; }
+#tab-unidades:checked  ~ .spa-main .page-unidades { display: block; }
+#tab-inquilinos:checked ~ .spa-main .page-inquilinos { display: block; }
+#tab-recibos:checked   ~ .spa-main .page-recibos { display: block; }
+
+/* Estilo de la pestaña activa (blanco y negro) */
+#tab-edificios:checked ~ .topbar .spa-nav label[for="tab-edificios"],
+#tab-unidades:checked  ~ .topbar .spa-nav label[for="tab-unidades"],
+#tab-inquilinos:checked ~ .topbar .spa-nav label[for="tab-inquilinos"],
+#tab-recibos:checked   ~ .topbar .spa-nav label[for="tab-recibos"] {
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
+}
+
+/* Títulos principales */
+.page > h1 {
+  color: #111111;
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Secciones internas (tarjetas) */
+.page > section {
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e5e5;
+}
+
+h2, h3, h4 {
+  margin-top: 0;
+  margin-bottom: 0.6rem;
+  color: #111111;
+}
+
+/* Formularios */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 0.75rem;
+  align-items: flex-end;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  color: #111111;
+}
+
+input,
+select,
+textarea {
+  padding: 0.35rem 0.4rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #d4d4d4;
+  font-family: inherit;
+  background: #ffffff;
+  color: #111111;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #111111;
+  outline-offset: 1px;
+  border-color: #111111;
+}
+
+/* BOTONES (único elemento con color) */
+button {
+  font-family: inherit;
+}
+
+/* Listas de edificios, unidades, inquilinos, recibos y personal */
+#building-list li,
+#unit-list li,
+#tenant-list li,
+#invoice-list li,
+#staff-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.75rem;
+}
+
+/* El texto ocupa todo el espacio disponible y empuja los botones a la derecha */
+#building-list li > span,
+#unit-list li > span,
+#tenant-list li > span,
+#invoice-list li > span,
+#staff-list li > span {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Botones compactos en línea, bien alineados */
+#building-list li button,
+#unit-list li button,
+#tenant-list li button,
+#invoice-list li button,
+#staff-list li button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  margin-left: 0; /* por si tenías márgenes anteriores */
+}
+
+/* Base */
+.btn {
+  cursor: pointer;
+  border-radius: 999px;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  justify-content: center;
+  color: #ffffff;
+  background: #111111;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.08s ease;
+}
+
+.btn .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn:disabled {
+  background: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Colores por función */
+.btn-primary { /* acciones principales: guardar, agregar, generar */
+  background: #111111;
+}
+
+.btn-info {     /* ver detalles / recibos / editar ligero */
+  background: #2563eb; /* azul */
+}
+
+.btn-success {  /* confirmar pago, activar, OK */
+  background: #16a34a; /* verde */
+}
+
+.btn-warning {  /* dar de baja / estado intermedio */
+  background: #d97706; /* ámbar */
+}
+
+.btn-danger {   /* eliminar, rescindir */
+  background: #dc2626; /* rojo */
+}
+
+.btn-outline {
+  background: transparent;
+  color: #111111;
+  border: 1px solid #d4d4d4;
+}
+
+/* Botones pequeños en listas */
+.btn-xs {
+  padding: 0.2rem 0.6rem;
+  font-size: 0.78rem;
+}
+
+/* Navegación "volver" */
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #d4d4d4;
+  background: #ffffff;
+  color: #111111;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: 500;
+  gap: 0.25rem;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.back-button:hover {
+  background: #f5f5f5;
+  border-color: #bdbdbd;
+}
+
+/* Listas */
+.list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.list li {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.list li:last-child {
+  border-bottom: none;
+}
+
+.list li span {
+  margin-right: 0.5rem;
+}
+
+/* Botones dentro de listas */
+.list li button {
+  margin-left: 0.15rem;
+}
+
+/* Hover en filas clicables (listas) */
+#building-list li,
+#unit-list li {
+  cursor: pointer;
+}
+
+#building-list li:hover,
+#unit-list li:hover {
+  background: #f5f5f5;
+}
+
+/* Texto de ayuda */
+.hint {
+  font-size: 0.8rem;
+  color: #757575;
+}
+
+/* Filas en formularios */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+/* Formulario de recibos con rejilla simple */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.inline-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+/* Header con botón volver */
+.page-header-with-back {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.page-header-with-back h1 {
+  margin: 0;
+}
+
+/* Texto de los botones (permite ocultarlo en móvil si quieres) */
+.btn-label,
+.nav-label-text {
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .spa-nav {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .spa-tab-label {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .page > section {
+    padding: 0.8rem 0.9rem;
+  }
+}
+
+@media (max-width: 520px) {
+  /* En móvil, deja sólo iconos en la barra superior para más limpieza */
+  .nav-label-text {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  #tenant-list li,
+  #invoice-list li,
+  #staff-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #tenant-list li > span,
+  #invoice-list li > span,
+  #staff-list li > span {
+    flex: none;
+    width: 100%;
+  }
+}
