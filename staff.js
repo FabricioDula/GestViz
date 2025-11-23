@@ -27,227 +27,151 @@ const summaryStaffCount = document.getElementById("summary-staff-count");
 const summaryStaffNames = document.getElementById("summary-staff-names");
 const unitsSummaryStaff = document.getElementById("units-summary-staff");
 
-// Página de Unidades (para crear ahí un bloque detallado de personal)
+// Página de Unidades (para crear ahí un bloque detallado de personal si queremos)
 const unidadesPage = document.querySelector(".page-unidades");
 
-// Referencias que inicializaremos cuando creemos el UI
-let staffForm = null;
-let staffNameInput = null;
-let staffPhoneInput = null;
-let staffSalaryInput = null;
-let staffNotesInput = null;
-let staffList = null;
+// ----- Modal de personal -----
+const staffModal = document.getElementById("staff-modal");
+const staffModalForm = document.getElementById("staff-modal-form");
+const staffModalIdInput = document.getElementById("staff-modal-id");
+const staffModalNameInput = document.getElementById("staff-modal-name");
+const staffModalPhoneInput = document.getElementById("staff-modal-phone");
+const staffModalSalaryInput = document.getElementById("staff-modal-salary");
+const staffModalNotesInput = document.getElementById("staff-modal-notes");
+const staffModalActiveSelect = document.getElementById("staff-modal-active");
+const staffModalBuildingNameLabel = document.getElementById("staff-modal-building-name");
+const staffModalCloseBtn = document.getElementById("staff-modal-close");
+const staffModalCancelBtn = document.getElementById("staff-modal-cancel");
 
-// Lista de personal detallada en la pestaña "Unidades"
-let unitsStaffList = null;
+// Referencias que inicializaremos cuando creemos el UI de lista
+let staffList = null;        // lista en la pestaña Inmuebles (debajo del grid)
+let unitsStaffList = null;   // lista de solo lectura en Unidades (opcional)
 
-// ===== UTILIDAD PARA HABILITAR / DESHABILITAR FORM =====
-function setStaffFormEnabled(enabled) {
-  if (!staffForm) return;
-  const elements = staffForm.querySelectorAll("input, button, textarea");
-  elements.forEach((el) => {
-    el.disabled = !enabled;
-  });
+// =======================================================
+//  Utilidades de resumen de personal
+// =======================================================
+function actualizarResumenStaff(total, nombresActivos) {
+  if (!Array.isArray(nombresActivos)) nombresActivos = [];
+
+  // Conteo simple
+  if (summaryStaffCount) {
+    summaryStaffCount.textContent = String(total ?? 0);
+  }
+
+  // Texto resumen para la pestaña Inmuebles
+  if (summaryStaffNames) {
+    if (total === 0) {
+      summaryStaffNames.textContent = "Sin personal registrado";
+    } else if (nombresActivos.length === 0) {
+      summaryStaffNames.textContent =
+        total === 1
+          ? "1 persona registrada (ninguna activa)"
+          : `${total} personas registradas (ninguna activa)`;
+    } else {
+      const todos = nombresActivos.join(", ");
+      if (total === nombresActivos.length) {
+        summaryStaffNames.textContent = `${total} activos: ${todos}`;
+      } else {
+        summaryStaffNames.textContent = `${total} registrados, activos: ${todos}`;
+      }
+    }
+  }
+
+  // Resumen para la tarjeta de Unidades
+  if (unitsSummaryStaff) {
+    if (total === 0) {
+      unitsSummaryStaff.textContent = "Sin personal asignado";
+    } else if (nombresActivos.length === 0) {
+      unitsSummaryStaff.textContent =
+        total === 1
+          ? "1 persona registrada (ninguna activa)"
+          : `${total} personas registradas (ninguna activa)`;
+    } else {
+      const primeros = nombresActivos.slice(0, 3).join(", ");
+      const extra =
+        nombresActivos.length > 3 ? ` y ${nombresActivos.length - 3} más` : "";
+
+      const texto =
+        nombresActivos.length === 1
+          ? `1 activo: ${primeros}`
+          : `${nombresActivos.length} activos: ${primeros}${extra}`;
+
+      unitsSummaryStaff.textContent = texto;
+    }
+  }
 }
 
-// ===== CREAR INTERFAZ DEL MÓDULO DE PERSONAL (sección en Inmuebles) =====
+// =======================================================
+//  UI principal en pestaña INMUEBLES
+// =======================================================
 function initStaffUI() {
   if (!staffModuleRoot) return;
 
   staffModuleRoot.innerHTML = `
     <div class="staff-card">
-      <h3>Registrar personal del inmueble</h3>
+      <h3>Personal del inmueble</h3>
       <p class="hint">
-        El personal se asocia al inmueble seleccionado. Primero selecciona un inmueble en la pestaña "Inmuebles".
+        Aquí se muestra el personal asociado al inmueble seleccionado.
+        Usa el botón <strong>"Nuevo"</strong> en el listado de inmuebles para registrar personal.
       </p>
-
-      <form id="staff-form">
-        <label>
-          Nombre del personal:
-          <input
-            type="text"
-            id="staff-name"
-            placeholder="Ej: Juan Pérez"
-            required
-          />
-        </label>
-
-        <label>
-          Teléfono:
-          <input
-            type="text"
-            id="staff-phone"
-            placeholder="Opcional"
-          />
-        </label>
-
-        <label>
-          Sueldo / paga mensual:
-          <input
-            type="number"
-            step="0.01"
-            min="0"
-            id="staff-salary"
-            placeholder="0.00"
-          />
-        </label>
-
-        <label style="flex: 1 1 100%;">
-          Notas:
-          <textarea
-            id="staff-notes"
-            rows="2"
-            placeholder="Rol, turno, funciones, etc."
-          ></textarea>
-        </label>
-
-        <button type="submit" class="btn btn-primary">
-          <span class="material-symbols-outlined">group_add</span>
-          <span class="btn-label">Agregar personal</span>
-        </button>
-      </form>
-    </div>
-
-    <div class="staff-card">
-      <h3>Personal registrado en el inmueble</h3>
       <ul id="staff-list" class="list"></ul>
     </div>
   `;
 
-  // Asignamos referencias
-  staffForm = document.getElementById("staff-form");
-  staffNameInput = document.getElementById("staff-name");
-  staffPhoneInput = document.getElementById("staff-phone");
-  staffSalaryInput = document.getElementById("staff-salary");
-  staffNotesInput = document.getElementById("staff-notes");
-  staffList = document.getElementById("staff-list");
-
-  // Inicio deshabilitado hasta que haya inmueble
-  setStaffFormEnabled(false);
-
-  if (staffForm) {
-    staffForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const buildingId = currentBuildingHidden?.value || "";
-      const buildingNombre = staffBuildingLabel?.textContent || "";
-
-      if (!buildingId) {
-        alert("Primero selecciona un inmueble para registrar personal.");
-        return;
-      }
-
-      const nombre = staffNameInput.value.trim();
-      const telefono = staffPhoneInput.value.trim();
-      const notas = staffNotesInput.value.trim();
-      const sueldoRaw = staffSalaryInput.value.trim();
-      const sueldo = sueldoRaw ? parseFloat(sueldoRaw) : 0;
-
-      if (!nombre) {
-        alert("El nombre del personal es obligatorio.");
-        return;
-      }
-
-      await addDoc(collection(db, "staff"), {
-        buildingId,
-        buildingNombre,
-        nombre,
-        telefono,
-        sueldo,
-        notas,
-        activo: true,
-        creadoEn: new Date()
-      });
-
-      staffNameInput.value = "";
-      staffPhoneInput.value = "";
-      staffSalaryInput.value = "";
-      staffNotesInput.value = "";
-
-      await cargarPersonalEdificio(buildingId);
-    });
-  }
+  staffList = staffModuleRoot.querySelector("#staff-list");
 }
 
-// ===== CREAR BLOQUE DETALLADO EN PESTAÑA "UNIDADES" =====
+// =======================================================
+//  Bloque adicional en pestaña UNIDADES (solo lectura)
+// =======================================================
 function initUnitsStaffBlock() {
-  if (!unidadesPage) return;
+  // Ahora el bloque viene ya creado en el HTML dentro del reporte
+  const container = document.getElementById("units-staff-section");
+  if (!container) return;
 
-  const existingSection = document.getElementById("units-staff-section");
-  if (existingSection) {
-    unitsStaffList = existingSection.querySelector("#units-staff-list");
-    return;
-  }
-
-  const section = document.createElement("section");
-  section.id = "units-staff-section";
-  section.innerHTML = `
-    <h2>Personal del inmueble</h2>
-    <p class="hint">
-      Listado del personal asociado al inmueble seleccionado. Solo lectura.
-    </p>
-    <ul id="units-staff-list" class="list"></ul>
-  `;
-  unidadesPage.appendChild(section);
-
-  unitsStaffList = section.querySelector("#units-staff-list");
+  unitsStaffList = container.querySelector("#units-staff-list");
 }
 
-// ===== CARGAR PERSONAL POR EDIFICIO =====
+
+// =======================================================
+//  Cargar personal por inmueble
+// =======================================================
 async function cargarPersonalEdificio(buildingId) {
-  if (!staffList) return;
-
-  staffList.innerHTML = "";
-  if (unitsStaffList) {
-    unitsStaffList.innerHTML = "";
-  }
-
+  // Sin inmueble → limpiar todo
   if (!buildingId) {
-    const li = document.createElement("li");
-    li.textContent = "Primero selecciona un inmueble.";
-    staffList.appendChild(li);
-
-    if (unitsStaffList) {
-      const li2 = document.createElement("li");
-      li2.textContent = "Primero selecciona un inmueble.";
-      unitsStaffList.appendChild(li2);
-    }
-
-    if (summaryStaffCount) summaryStaffCount.textContent = "—";
-    if (unitsSummaryStaff) unitsSummaryStaff.textContent = "—";
-    if (summaryStaffNames) summaryStaffNames.textContent = "—";
-
-    setStaffFormEnabled(false);
+    if (staffList) staffList.innerHTML = "";
+    if (unitsStaffList) unitsStaffList.innerHTML = "";
+    actualizarResumenStaff(0, []);
     return;
   }
 
-  setStaffFormEnabled(true);
+  // Limpiar listas
+  if (staffList) staffList.innerHTML = "";
+  if (unitsStaffList) unitsStaffList.innerHTML = "";
 
-  const q = query(
+  const qStaff = query(
     collection(db, "staff"),
     where("buildingId", "==", buildingId)
   );
-
-  const snapshot = await getDocs(q);
+  const snapshot = await getDocs(qStaff);
 
   if (snapshot.empty) {
-    const li = document.createElement("li");
-    li.textContent = "No hay personal registrado para este inmueble.";
-    staffList.appendChild(li);
-
+    if (staffList) {
+      const li = document.createElement("li");
+      li.textContent = "No hay personal registrado para este inmueble.";
+      staffList.appendChild(li);
+    }
     if (unitsStaffList) {
       const li2 = document.createElement("li");
       li2.textContent = "No hay personal registrado para este inmueble.";
       unitsStaffList.appendChild(li2);
     }
-
-    if (summaryStaffCount) summaryStaffCount.textContent = "0 personas";
-    if (unitsSummaryStaff) unitsSummaryStaff.textContent = "Sin personal registrado";
-    if (summaryStaffNames) summaryStaffNames.textContent = "Sin personal registrado";
+    actualizarResumenStaff(0, []);
     return;
   }
 
-  let total = 0;
   const nombresActivos = [];
+  let total = 0;
 
   snapshot.forEach((docSnap) => {
     total += 1;
@@ -257,181 +181,270 @@ async function cargarPersonalEdificio(buildingId) {
     const estadoTexto = data.activo ? "ACTIVO" : "INACTIVO";
     const sueldo = Number(data.sueldo || 0);
 
-    // ===== LISTA PRINCIPAL (MÓDULO STAFF EN INMUEBLES) =====
-    const li = document.createElement("li");
-    const spanInfo = document.createElement("span");
-    spanInfo.textContent =
-      `${data.nombre} - Tel: ${data.telefono || "N/A"} - Sueldo: ${sueldo.toFixed(2)} - Estado: ${estadoTexto}` +
-      (data.notas ? ` - Notas: ${data.notas}` : "");
-    li.appendChild(spanInfo);
+    // ===== LISTA PRINCIPAL (Inmuebles) =====
+    if (staffList) {
+      const li = document.createElement("li");
+      const main = document.createElement("div");
+      main.className = "item-main";
 
-    if (data.activo) {
-      nombresActivos.push(data.nombre);
+      main.innerHTML = `
+        <strong>${data.nombre || "Sin nombre"}</strong>
+        <div style="font-size:0.8rem; color:#666;">
+          Tel: ${data.telefono || "N/A"} · Sueldo: ${sueldo.toFixed(
+        2
+      )} · Estado: ${estadoTexto}
+        </div>
+        ${
+          data.notas
+            ? `<div style="font-size:0.75rem; color:#888; margin-top:0.2rem;">
+                 ${data.notas}
+               </div>`
+            : ""
+        }
+      `;
+      li.appendChild(main);
+
+      const actions = document.createElement("div");
+
+      // Botón activar/desactivar
+      const toggleBtn = document.createElement("button");
+      toggleBtn.type = "button";
+      toggleBtn.className =
+        "btn btn-xs " + (data.activo ? "btn-warning" : "btn-success");
+      toggleBtn.innerHTML = `
+        <span class="material-symbols-outlined">
+          ${data.activo ? "block" : "check_circle"}
+        </span>
+        <span class="btn-label">
+          ${data.activo ? "Desactivar" : "Activar"}
+        </span>
+      `;
+      toggleBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const staffRef = doc(db, "staff", id);
+        await updateDoc(staffRef, { activo: !data.activo });
+        await cargarPersonalEdificio(buildingId);
+      });
+      actions.appendChild(toggleBtn);
+
+      // Botón editar
+      const editBtn = document.createElement("button");
+      editBtn.type = "button";
+      editBtn.className = "btn btn-xs btn-info";
+      editBtn.innerHTML = `
+        <span class="material-symbols-outlined">edit</span>
+        <span class="btn-label">Editar</span>
+      `;
+      editBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        abrirStaffModal({
+          buildingId,
+          buildingNombre: staffBuildingLabel?.textContent || "",
+          staffId: id,
+          data
+        });
+      });
+      actions.appendChild(editBtn);
+
+      // Botón eliminar
+      const deleteBtn = document.createElement("button");
+      deleteBtn.type = "button";
+      deleteBtn.className = "btn btn-xs btn-danger";
+      deleteBtn.innerHTML = `
+        <span class="material-symbols-outlined">delete</span>
+        <span class="btn-label">Eliminar</span>
+      `;
+      deleteBtn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const ok = confirm(
+          `¿Eliminar a ${data.nombre || "este personal"} del registro?`
+        );
+        if (!ok) return;
+        await deleteDoc(doc(db, "staff", id));
+        await cargarPersonalEdificio(buildingId);
+      });
+      actions.appendChild(deleteBtn);
+
+      li.appendChild(actions);
+      staffList.appendChild(li);
     }
 
-    // Botón activar/desactivar
-    const toggleBtn = document.createElement("button");
-    toggleBtn.type = "button";
-    toggleBtn.className = "btn btn-xs " + (data.activo ? "btn-warning" : "btn-success");
-    toggleBtn.innerHTML = `
-      <span class="material-symbols-outlined">
-        ${data.activo ? "block" : "check_circle"}
-      </span>
-      <span class="btn-label">
-        ${data.activo ? "Desactivar" : "Activar"}
-      </span>
-    `;
-    toggleBtn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const staffRef = doc(db, "staff", id);
-      await updateDoc(staffRef, { activo: !data.activo });
-      await cargarPersonalEdificio(buildingId);
-    });
-    li.appendChild(toggleBtn);
-
-    // Botón editar
-    const editBtn = document.createElement("button");
-    editBtn.type = "button";
-    editBtn.className = "btn btn-xs btn-info";
-    editBtn.innerHTML = `
-      <span class="material-symbols-outlined">edit</span>
-      <span class="btn-label">Editar</span>
-    `;
-    editBtn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-
-      const nuevoNombre = prompt("Nombre del personal:", data.nombre || "");
-      if (nuevoNombre === null) return;
-      const nombreTrim = nuevoNombre.trim();
-      if (!nombreTrim) {
-        alert("El nombre no puede quedar vacío.");
-        return;
-      }
-
-      const nuevoTel = prompt("Teléfono:", data.telefono || "");
-      if (nuevoTel === null) return;
-      const telTrim = nuevoTel.trim();
-
-      const nuevoSueldoStr = prompt(
-        "Sueldo / paga mensual:",
-        data.sueldo != null ? String(data.sueldo) : ""
-      );
-      if (nuevoSueldoStr === null) return;
-      const sueldoNum = nuevoSueldoStr.trim() ? parseFloat(nuevoSueldoStr) : 0;
-
-      const nuevasNotas = prompt("Notas:", data.notas || "");
-      if (nuevasNotas === null) return;
-      const notasTrim = nuevasNotas.trim();
-
-      const staffRef = doc(db, "staff", id);
-      await updateDoc(staffRef, {
-        nombre: nombreTrim,
-        telefono: telTrim,
-        sueldo: sueldoNum,
-        notas: notasTrim
-      });
-
-      await cargarPersonalEdificio(buildingId);
-    });
-    li.appendChild(editBtn);
-
-    // Botón eliminar
-    const deleteBtn = document.createElement("button");
-    deleteBtn.type = "button";
-    deleteBtn.className = "btn btn-xs btn-danger";
-    deleteBtn.innerHTML = `
-      <span class="material-symbols-outlined">delete</span>
-      <span class="btn-label">Eliminar</span>
-    `;
-    deleteBtn.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      const ok = confirm(`¿Eliminar a ${data.nombre}?`);
-      if (!ok) return;
-      const staffRef = doc(db, "staff", id);
-      await deleteDoc(staffRef);
-      await cargarPersonalEdificio(buildingId);
-    });
-    li.appendChild(deleteBtn);
-
-    staffList.appendChild(li);
-
-    // ===== LISTA DETALLADA EN PESTAÑA UNIDADES =====
+    // ===== LISTA EN UNIDADES (solo lectura) =====
     if (unitsStaffList) {
-      const liU = document.createElement("li");
-      const spanU = document.createElement("span");
-      spanU.textContent =
-        `${data.nombre} - Tel: ${data.telefono || "N/A"} - Sueldo: ${sueldo.toFixed(2)} - Estado: ${estadoTexto}` +
+      const li2 = document.createElement("li");
+      const texto =
+        `${data.nombre} - Tel: ${data.telefono || "N/A"} - Sueldo: ${sueldo.toFixed(
+          2
+        )} - Estado: ${estadoTexto}` +
         (data.notas ? ` - Notas: ${data.notas}` : "");
-      liU.appendChild(spanU);
-      unitsStaffList.appendChild(liU);
+      li2.textContent = texto;
+      unitsStaffList.appendChild(li2);
+    }
+
+    if (data.activo) {
+      nombresActivos.push(data.nombre || "Sin nombre");
     }
   });
 
-  // ===== Actualizar resúmenes =====
-  if (summaryStaffCount) {
-    summaryStaffCount.textContent =
-      total === 1 ? "1 persona" : `${total} personas`;
-  }
-
-  if (nombresActivos.length === 0) {
-    if (unitsSummaryStaff) unitsSummaryStaff.textContent = "Sin personal activo";
-    if (summaryStaffNames) {
-      summaryStaffNames.textContent =
-        total === 1
-          ? "1 persona registrada (ninguna activa)"
-          : `${total} personas registradas (ninguna activa)`;
-    }
-  } else {
-    const primeros = nombresActivos.slice(0, 3).join(", ");
-    const extra =
-      nombresActivos.length > 3 ? ` y ${nombresActivos.length - 3} más` : "";
-
-    const textoUnidades =
-      nombresActivos.length === 1
-        ? `1 activo: ${primeros}`
-        : `${nombresActivos.length} activos: ${primeros}${extra}`;
-
-    if (unitsSummaryStaff) unitsSummaryStaff.textContent = textoUnidades;
-
-    if (summaryStaffNames) {
-      const todos = nombresActivos.join(", ");
-      summaryStaffNames.textContent =
-        total === nombresActivos.length
-          ? `${total} activos: ${todos}`
-          : `${total} registrados, activos: ${todos}`;
-    }
-  }
+  actualizarResumenStaff(total, nombresActivos);
 }
 
-// ===== ESCUCHAR CAMBIOS DESDE app.js (edificio / unidad) =====
+// =======================================================
+//  Modal de personal
+// =======================================================
+function abrirStaffModal(opciones = {}) {
+  if (!staffModal || !staffModalForm) return;
+
+  const { buildingId, buildingNombre, staffId, data } = opciones;
+
+  // Si viene un buildingId desde el grid de inmuebles, lo usamos como contexto
+  if (buildingId) {
+    if (currentBuildingHidden) {
+      currentBuildingHidden.value = buildingId;
+      currentBuildingHidden.dispatchEvent(new Event("change"));
+    }
+    if (staffBuildingLabel) {
+      staffBuildingLabel.textContent = buildingNombre || "Ninguno";
+    }
+  }
+
+  // Setear título y campos
+  staffModalIdInput.value = staffId || "";
+  staffModalNameInput.value = data?.nombre || "";
+  staffModalPhoneInput.value = data?.telefono || "";
+  staffModalSalaryInput.value =
+    data?.sueldo != null ? String(data.sueldo) : "";
+  staffModalNotesInput.value = data?.notas || "";
+  staffModalActiveSelect.value =
+    data?.activo === false ? "false" : "true";
+
+  staffModalBuildingNameLabel.textContent =
+    buildingNombre || staffBuildingLabel?.textContent || "Ninguno";
+
+  staffModal.classList.add("visible");
+}
+
+function cerrarStaffModal() {
+  if (!staffModal) return;
+  staffModal.classList.remove("visible");
+}
+
+// Botones cerrar/cancelar modal
+if (staffModalCloseBtn) {
+  staffModalCloseBtn.addEventListener("click", cerrarStaffModal);
+}
+if (staffModalCancelBtn) {
+  staffModalCancelBtn.addEventListener("click", cerrarStaffModal);
+}
+
+// Submit del modal
+if (staffModalForm) {
+  staffModalForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const buildingId = currentBuildingHidden?.value || "";
+    const buildingNombre = staffBuildingLabel?.textContent || "";
+
+    if (!buildingId) {
+      alert("Primero selecciona un inmueble para registrar personal.");
+      return;
+    }
+
+    const staffId = staffModalIdInput.value || null;
+    const nombre = staffModalNameInput.value.trim();
+    const telefono = staffModalPhoneInput.value.trim();
+    const notas = staffModalNotesInput.value.trim();
+    const sueldoRaw = staffModalSalaryInput.value.trim();
+    const activo = staffModalActiveSelect.value === "true";
+
+    if (!nombre) {
+      alert("El nombre del personal es obligatorio.");
+      return;
+    }
+
+    const sueldo =
+      sueldoRaw !== "" && !isNaN(Number(sueldoRaw))
+        ? Number(sueldoRaw)
+        : 0;
+
+    if (staffId) {
+      // Actualizar
+      const staffRef = doc(db, "staff", staffId);
+      await updateDoc(staffRef, {
+        nombre,
+        telefono,
+        notas,
+        sueldo,
+        activo
+      });
+    } else {
+      // Crear
+      await addDoc(collection(db, "staff"), {
+        buildingId,
+        buildingNombre,
+        nombre,
+        telefono,
+        notas,
+        sueldo,
+        activo,
+        creadoEn: new Date()
+      });
+    }
+
+    cerrarStaffModal();
+    await cargarPersonalEdificio(buildingId);
+  });
+}
+
+// =======================================================
+//  Sincronización con app.js
+// =======================================================
+
+// Cuando app.js cambia el inmueble actual
 if (currentBuildingHidden) {
   currentBuildingHidden.addEventListener("change", () => {
     const buildingId = currentBuildingHidden.value || "";
-    if (!buildingId) {
-      if (staffBuildingLabel) staffBuildingLabel.textContent = "Ninguno";
-      cargarPersonalEdificio("");
-      return;
-    }
     cargarPersonalEdificio(buildingId);
   });
 }
 
-if (currentUnitHidden && staffUnitLabel) {
+// Cuando app.js cambia la unidad actual (para info en etiquetas)
+if (currentUnitHidden) {
   currentUnitHidden.addEventListener("change", () => {
     const unitId = currentUnitHidden.value || "";
     if (!unitId) {
-      staffUnitLabel.textContent = "Ninguna";
+      if (staffUnitLabel) staffUnitLabel.textContent = "Ninguna";
       return;
     }
     // El nombre de la unidad lo setea app.js en staff-unit-label
   });
 }
 
-// ===== INICIALIZAR MÓDULO =====
-initStaffUI();
-initUnitsStaffBlock();
+// Evento personalizado que dispara app.js cuando se pulsa "Nuevo" en el grid
+window.addEventListener("openStaffModalForBuilding", (event) => {
+  const detail = event.detail || {};
+  const buildingId = detail.buildingId || "";
+  const buildingNombre = detail.buildingNombre || "";
 
-// Si al cargar ya hay un edificio seleccionado
-if (currentBuildingHidden && currentBuildingHidden.value) {
-  cargarPersonalEdificio(currentBuildingHidden.value);
+  if (!buildingId) {
+    alert("No se encontró el inmueble para registrar personal.");
+    return;
+  }
+
+  abrirStaffModal({ buildingId, buildingNombre });
+});
+
+// =======================================================
+//  INIT
+// =======================================================
+function init() {
+  initStaffUI();
+  initUnitsStaffBlock();
+
+  // Si al cargar ya hay un edificio seleccionado (app.js puede haberlo puesto)
+  if (currentBuildingHidden && currentBuildingHidden.value) {
+    cargarPersonalEdificio(currentBuildingHidden.value);
+  }
 }
+
+init();
