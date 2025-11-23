@@ -1,4 +1,6 @@
-/* Reset / layout básico */
+/* =========================================================
+   Reset / layout básico
+   ========================================================= */
 * {
   box-sizing: border-box;
 }
@@ -10,7 +12,13 @@ body {
   color: #111111;
 }
 
-/* Barra superior */
+.hidden {
+  display: none !important;
+}
+
+/* =========================================================
+   Barra superior
+   ========================================================= */
 .topbar {
   position: sticky;
   top: 0;
@@ -60,7 +68,9 @@ body {
   vertical-align: middle;
 }
 
-/* Navegación SPA (tabs) */
+/* =========================================================
+   Navegación SPA (tabs)
+   ========================================================= */
 .spa-nav {
   display: flex;
   gap: 0.5rem;
@@ -118,14 +128,15 @@ body {
   border-color: #111111;
 }
 
-/* Títulos principales */
+/* =========================================================
+   Títulos y secciones
+   ========================================================= */
 .page > h1 {
   color: #111111;
   font-size: 1.4rem;
   margin-bottom: 0.75rem;
 }
 
-/* Secciones internas (tarjetas) */
 .page > section {
   background: #ffffff;
   padding: 1rem 1.25rem;
@@ -141,7 +152,9 @@ h2, h3, h4 {
   color: #111111;
 }
 
-/* Formularios */
+/* =========================================================
+   Formularios
+   ========================================================= */
 form {
   display: flex;
   flex-wrap: wrap;
@@ -181,45 +194,11 @@ textarea:focus {
   border-color: #111111;
 }
 
-/* BOTONES (único elemento con color) */
+/* =========================================================
+   Botones (único elemento con color)
+   ========================================================= */
 button {
   font-family: inherit;
-}
-
-/* Listas de edificios, unidades, inquilinos, recibos y personal */
-#building-list li,
-#unit-list li,
-#tenant-list li,
-#invoice-list li,
-#staff-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.35rem 0.75rem;
-}
-
-/* El texto ocupa todo el espacio disponible y empuja los botones a la derecha */
-#building-list li > span,
-#unit-list li > span,
-#tenant-list li > span,
-#invoice-list li > span,
-#staff-list li > span {
-  flex: 1;
-  min-width: 0;
-}
-
-/* Botones compactos en línea, bien alineados */
-#building-list li button,
-#unit-list li button,
-#tenant-list li button,
-#invoice-list li button,
-#staff-list li button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  white-space: nowrap;
-  margin-left: 0; /* por si tenías márgenes anteriores */
 }
 
 /* Base */
@@ -274,7 +253,7 @@ button {
   background: #16a34a; /* verde */
 }
 
-.btn-warning {  /* dar de baja / estado intermedio */
+.btn-warning {  /* dar de baja / estado intermedio / servicios */
   background: #d97706; /* ámbar */
 }
 
@@ -316,7 +295,33 @@ button {
   border-color: #bdbdbd;
 }
 
-/* Listas */
+/* Texto de los botones (permite ocultarlo en móvil si quieres) */
+.btn-label,
+.nav-label-text {
+  white-space: nowrap;
+}
+
+/* Botón icono (cerrar modal, etc.) */
+.icon-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 999px;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #555555;
+}
+
+.icon-button:hover {
+  background: #f3f3f3;
+}
+
+/* =========================================================
+   Listas de edificios, unidades, inquilinos y recibos
+   ========================================================= */
 .list {
   list-style: none;
   padding-left: 0;
@@ -336,13 +341,37 @@ button {
   border-bottom: none;
 }
 
-.list li span {
-  margin-right: 0.5rem;
+/* Filas específicas (para todo: edificios, unidades, inquilinos, recibos) */
+#building-list li,
+#unit-list li,
+#tenant-list li,
+#invoice-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0.75rem;
 }
 
-/* Botones dentro de listas */
-.list li button {
-  margin-left: 0.15rem;
+/* El texto ocupa todo el espacio disponible y empuja los botones a la derecha */
+#building-list li > span,
+#unit-list li > span,
+#tenant-list li > span,
+#invoice-list li > span {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Botones compactos en línea, bien alineados */
+#building-list li button,
+#unit-list li button,
+#tenant-list li button,
+#invoice-list li button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  white-space: nowrap;
+  margin-left: 0;
 }
 
 /* Hover en filas clicables (listas) */
@@ -356,13 +385,38 @@ button {
   background: #f5f5f5;
 }
 
-/* Texto de ayuda */
+/* =========================================================
+   Resúmenes de inmueble
+   ========================================================= */
+.building-summary-card {
+  background: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e5e5e5;
+  margin-bottom: 1rem;
+}
+
+.building-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.building-summary-grid p {
+  margin: 0.15rem 0;
+}
+
+/* =========================================================
+   Estructuras auxiliares
+   ========================================================= */
 .hint {
   font-size: 0.8rem;
   color: #757575;
 }
 
-/* Filas en formularios */
 .row {
   display: flex;
   flex-wrap: wrap;
@@ -394,13 +448,153 @@ button {
   margin: 0;
 }
 
-/* Texto de los botones (permite ocultarlo en móvil si quieres) */
-.btn-label,
-.nav-label-text {
-  white-space: nowrap;
+/* =========================================================
+   MODALES
+   ========================================================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 17, 0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
 }
 
-/* Responsive */
+.modal-backdrop.visible {
+  display: flex;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-wide {
+  max-width: 900px;
+}
+
+.modal-medium {
+  max-width: 640px;
+}
+
+.modal-header {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.modal-title h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.modal-subtitle {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #555555;
+}
+
+.modal-body-grid {
+  padding: 1rem 1.25rem 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.75rem 1.5rem;
+}
+
+.modal-footer {
+  padding: 0.75rem 1.25rem 1rem;
+  border-top: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* ---- Modal de mapa ---- */
+.modal-map-grid {
+  padding: 1rem 1.25rem 0.75rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.5fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.modal-map-left h4,
+.modal-map-right h4 {
+  margin: 0 0 0.4rem;
+}
+
+.modal-map-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.modal-map-right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.map-preview-placeholder {
+  border-radius: 10px;
+  border: 1px dashed #d4d4d4;
+  background: #fafafa;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #777777;
+}
+
+.map-preview-placeholder .material-symbols-outlined {
+  font-size: 28px;
+}
+
+.map-preview-frame {
+  width: 100%;
+  min-height: 260px;
+  border-radius: 10px;
+  border: 1px solid #d4d4d4;
+}
+
+.modal-footer-right {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+@media (max-width: 900px) {
+  .modal-map-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal {
+    max-height: calc(100vh - 2rem);
+  }
+}
+
 @media (max-width: 720px) {
   .topbar {
     flex-direction: column;
@@ -423,25 +617,23 @@ button {
   }
 }
 
-@media (max-width: 520px) {
-  /* En móvil, deja sólo iconos en la barra superior para más limpieza */
-  .nav-label-text {
-    display: none;
-  }
-}
-
 @media (max-width: 600px) {
   #tenant-list li,
-  #invoice-list li,
-  #staff-list li {
+  #invoice-list li {
     flex-direction: column;
     align-items: flex-start;
   }
 
   #tenant-list li > span,
-  #invoice-list li > span,
-  #staff-list li > span {
+  #invoice-list li > span {
     flex: none;
     width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  /* En móvil, deja sólo iconos en la barra superior para más limpieza */
+  .nav-label-text {
+    display: none;
   }
 }
