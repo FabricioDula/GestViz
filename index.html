@@ -1,713 +1,921 @@
-/* =========================================================
-   Reset / layout básico
-   ========================================================= */
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
-  background: #f5f5f5;
-  color: #111111;
-}
-
-.hidden {
-  display: none !important;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  margin-top: 0;
-  font-weight: 600;
-}
-
-/* =========================================================
-   Topbar y navegación
-   ========================================================= */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.5rem 1.25rem;
-  background: #111111;
-  color: #ffffff;
-}
-
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.logo-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #111111;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.85rem;
-}
-
-.logo-text {
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.spa-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-/* Ocultar radios */
-.spa-nav input[type="radio"] {
-  display: none;
-}
-
-/* Tabs tipo "píldora" */
-.spa-tab-label {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  color: #f5f5f5;
-  border: 1px solid transparent;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-}
-
-#tab-edificios:checked + .spa-tab-label,
-#tab-unidades:checked + .spa-tab-label,
-#tab-inquilinos:checked + .spa-tab-label,
-#tab-recibos:checked + .spa-tab-label {
-  background: #ffffff;
-  color: #111111;
-  border-color: #ffffff;
-}
-
-/* =========================================================
-   Layout principal
-   ========================================================= */
-.spa-main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1rem 1.25rem 2rem;
-}
-
-.page {
-  display: none;
-}
-
-.page-edificios {
-  display: block; /* visible por defecto */
-}
-
-.page section {
-  margin-bottom: 1.25rem;
-  padding: 0.9rem 1rem;
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e5e5;
-}
-
-.page h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.6rem;
-}
-
-/* Texto de ayuda */
-.hint {
-  font-size: 0.85rem;
-  color: #666666;
-  margin-top: 0.15rem;
-}
-
-/* Fila para el botón atrás */
-.back-row {
-  margin-bottom: 0.75rem;
-}
-
-/* Botón atrás */
-.back-button {
-  border-radius: 999px;
-  border: 1px solid #dddddd;
-  background: #ffffff;
-  color: #333333;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.back-button:hover {
-  background: #f5f5f5;
-}
-
-/* =========================================================
-   Formularios genéricos
-   ========================================================= */
-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.9rem;
-}
-
-input,
-select,
-textarea {
-  border-radius: 0.5rem;
-  border: 1px solid #cccccc;
-  padding: 0.4rem 0.6rem;
-  font-size: 0.9rem;
-  font-family: inherit;
-  background: #ffffff;
-  color: #111111;
-}
-
-textarea {
-  resize: vertical;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  outline: 2px solid #111111;
-  outline-offset: 1px;
-  border-color: #111111;
-}
-
-/* =========================================================
-   Botones
-   ========================================================= */
-.btn,
-.icon-button {
-  border-radius: 999px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.85rem;
-  padding: 0.35rem 0.85rem;
-  background: #111111;
-  color: #ffffff;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.btn .material-symbols-outlined,
-.icon-button .material-symbols-outlined {
-  font-size: 18px;
-}
-
-.btn-primary {
-  background: #111111;
-  color: #ffffff;
-  border-color: #111111;
-}
-
-.btn-outline {
-  background: transparent;
-  color: #111111;
-  border-color: #cccccc;
-}
-
-.btn-info {
-  background: #1976d2;
-  border-color: #1976d2;
-  color: #ffffff;
-}
-
-.btn-success {
-  background: #2e7d32;
-  border-color: #2e7d32;
-  color: #ffffff;
-}
-
-.btn-warning {
-  background: #f9a825;
-  border-color: #f9a825;
-  color: #111111;
-}
-
-.btn-danger {
-  background: #d32f2f;
-  border-color: #d32f2f;
-  color: #ffffff;
-}
-
-.btn-xs {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.6rem;
-}
-
-.btn:disabled,
-.icon-button:disabled {
-  opacity: 0.6;
-  cursor: default;
-}
-
-.icon-button {
-  padding: 0.25rem;
-  background: transparent;
-  border: none;
-  color: #111111;
-}
-
-/* =========================================================
-   Listas genéricas (unidades, inquilinos, recibos, staff)
-   ========================================================= */
-.list {
-  list-style: none;
-  padding: 0;
-  margin: 0.4rem 0 0;
-}
-
-.list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.5rem 0.6rem;
-  border-radius: 0.6rem;
-  border: 1px solid #eeeeee;
-  background: #ffffff;
-  font-size: 0.9rem;
-}
-
-.list li + li {
-  margin-top: 0.4rem;
-}
-
-.list li:hover {
-  background: #f5f5f5;
-}
-
-.list li .item-main {
-  flex: 1;
-  min-width: 0;
-}
-
-.list li .item-main strong {
-  font-weight: 600;
-}
-
-/* =========================================================
-   Resúmenes de edificio / tarjetas
-   ========================================================= */
-.building-summary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 0.4rem 1rem;
-  font-size: 0.9rem;
-}
-
-.building-summary-card {
-  margin-bottom: 1.25rem;
-  padding: 0.9rem 1rem;
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e5e5;
-}
-
-/* Staff en página de inmuebles */
-#staff-section-edificios {
-  margin-top: 0.75rem;
-}
-
-.staff-card {
-  padding: 0.9rem 1rem;
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e5e5;
-  margin-top: 0.5rem;
-}
-
-/* =========================================================
-   Invoice grid
-   ========================================================= */
-.invoice-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 0.75rem;
-}
-
-/* =========================================================
-   Modales genéricos
-   ========================================================= */
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.42);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  z-index: 100;
-}
-
-.modal-backdrop.visible {
-  display: flex;
-}
-
-.modal {
-  background: #ffffff;
-  border-radius: 0.9rem;
-  border: 1px solid #e0e0e0;
-  max-width: 640px;
-  width: 100%;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-medium {
-  max-width: 640px;
-}
-
-.modal-wide {
-  max-width: 960px;
-}
-
-.modal-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #eeeeee;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.modal-title {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.modal-title h3 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.modal-subtitle {
-  margin: 0;
-  font-size: 0.8rem;
-  color: #777777;
-}
-
-.modal-body-grid {
-  padding: 0.75rem 1rem 0.25rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  overflow-y: auto;
-}
-
-.modal-footer {
-  padding: 0.6rem 1rem 0.8rem;
-  border-top: 1px solid #eeeeee;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem;
-}
-
-/* Modal mapa específico */
-.modal-map-grid {
-  padding: 0.75rem 1rem 0.75rem;
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.7fr);
-  gap: 0.75rem;
-}
-
-.modal-map-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.modal-map-right {
-  min-height: 260px;
-}
-
-#map-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  border-radius: 0.75rem;
-  background: #f0f0f0;
-}
-
-.map-external-link {
-  margin-top: 0.4rem;
-}
-
-/* =========================================================
-   DATA GRID ESTILO MATERIAL (Inmuebles)
-   ========================================================= */
-.buildings-main-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.section-header h2 {
-  margin: 0;
-}
-
-/* Barra de búsqueda */
-.building-toolbar {
-  margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  justify-content: flex-start;
-}
-
-.search-field {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.6rem;
-  border-radius: 999px;
-  border: 1px solid #dddddd;
-  background: #fafafa;
-}
-
-.search-field input {
-  border: none;
-  outline: none;
-  background: transparent;
-  min-width: 180px;
-  font-size: 0.9rem;
-}
-
-/* Contenedor responsive del grid */
-.mui-data-grid {
-  width: 100%;
-  overflow-x: auto;
-  border-radius: 0.75rem;
-  border: 1px solid #e0e0e0;
-  background: #ffffff;
-}
-
-.mui-data-grid-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.mui-data-grid-table thead {
-  background: #fafafa;
-}
-
-.mui-data-grid-table th,
-.mui-data-grid-table td {
-  padding: 0.6rem 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #eeeeee;
-}
-
-.mui-data-grid-table th {
-  font-weight: 600;
-  color: #555555;
-}
-
-.mui-col-main {
-  min-width: 220px;
-}
-
-.mui-main-title {
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.mui-main-subtitle {
-  font-size: 0.8rem;
-  color: #555555;
-}
-
-.mui-main-meta {
-  margin-top: 0.2rem;
-  font-size: 0.75rem;
-  color: #888888;
-}
-
-.mui-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.1rem 0.5rem;
-  border-radius: 999px;
-  border: 1px solid #e0e0e0;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.mui-col-actions {
-  white-space: nowrap;
-}
-
-.mui-data-grid-table tbody tr:hover {
-  background: #f5f5f5;
-}
-
-/* Footer de paginación */
-.mui-data-grid-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.8rem;
-  color: #666666;
-}
-
-.mui-data-grid-footer .pager-buttons {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-/* =========================================================
-   Layout de contexto / reporte en Unidades
-   ========================================================= */
-.unit-context-section {
-  padding: 0;
-  border: none;
-  background: transparent;
-  margin-bottom: 1.25rem;
-}
-
-.unit-context-section > h2 {
-  margin: 0 0 0.6rem 0.1rem;
-  font-size: 1.1rem;
-}
-
-.unit-context-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.6fr);
-  gap: 1rem;
-}
-
-.context-card {
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #e5e5e5;
-  padding: 0.9rem 1rem;
-}
-
-/* Embebido de staff dentro del reporte */
-.embedded-staff-section {
-  margin-top: 0.9rem;
-  padding: 0.7rem 0.8rem;
-  border-radius: 0.75rem;
-  border: 1px dashed #dddddd;
-  background: #fafafa;
-}
-
-.embedded-staff-section h3 {
-  margin-top: 0;
-}
-
-/* =========================================================
-   Recibos: pequeños ajustes
-   ========================================================= */
-.page-recibos #invoice-list.list > li {
-  border-color: #e5e5e5;
-}
-
-/* =========================================================
-   Ocultar resumen del inmueble en pestaña Inmuebles
-   ========================================================= */
-#building-summary {
-  display: none !important;
-}
-
-/* =========================================================
-   Responsivo
-   ========================================================= */
-@media (max-width: 800px) {
-  .spa-main {
-    padding: 0.75rem 0.75rem 1.5rem;
-  }
-
-  .page section {
-    padding: 0.8rem 0.8rem;
-  }
-
-  .modal {
-    max-height: 95vh;
-  }
-
-  .modal-map-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .modal-map-right {
-    height: 220px;
-  }
-
-  .unit-context-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .search-field input {
-    min-width: 120px;
-  }
-
-  .mui-data-grid-table {
-    min-width: 520px;
-  }
-}
-
-@media (max-width: 480px) {
-  .topbar {
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .logo-text {
-    font-size: 0.9rem;
-  }
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <title>Gestor de Inmuebles</title>
+
+  <!-- Iconos Material -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+  />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="logo-area">
+      <span class="logo-mark">GI</span>
+      <span class="logo-text">Gestor de Inmuebles</span>
+    </div>
+
+    <!-- Navegación SPA (tabs) -->
+    <nav class="spa-nav">
+      <input type="radio" id="tab-edificios" name="spa-tabs" checked />
+      <input type="radio" id="tab-unidades" name="spa-tabs" />
+      <input type="radio" id="tab-inquilinos" name="spa-tabs" />
+      <input type="radio" id="tab-recibos" name="spa-tabs" />
+
+      <label class="spa-tab-label" for="tab-edificios">Inmuebles</label>
+      <label class="spa-tab-label" for="tab-unidades">Unidades</label>
+      <label class="spa-tab-label" for="tab-inquilinos">Inquilinos</label>
+      <label class="spa-tab-label" for="tab-recibos">Recibos</label>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main class="spa-main">
+    <!-- ================== PÁGINA EDIFICIOS ================== -->
+    <div class="page page-edificios">
+      <h1>Inmuebles</h1>
+
+      <!-- Resumen del inmueble seleccionado (se oculta en esta pestaña por CSS) -->
+      <section id="building-summary" class="hidden">
+        <h2>Resumen del inmueble seleccionado</h2>
+
+        <div class="building-summary-grid">
+          <p><strong>Nombre:</strong> <span id="summary-building-name">Ninguno</span></p>
+          <p><strong>Tipo:</strong> <span id="summary-building-type">—</span></p>
+          <p><strong>Dirección:</strong> <span id="summary-building-address">—</span></p>
+
+          <p><strong>Medidor agua:</strong> <span id="summary-water-code">—</span></p>
+          <p><strong>Medidor gas:</strong> <span id="summary-gas-code">—</span></p>
+
+          <p><strong>Internet (código):</strong> <span id="summary-internet-code">—</span></p>
+          <p><strong>Proveedor internet:</strong> <span id="summary-internet-company">—</span></p>
+          <p><strong>Precio internet:</strong> <span id="summary-internet-price">—</span></p>
+
+          <p><strong>Ubicación (Maps):</strong> <span id="summary-maps-url">—</span></p>
+          <p><strong>Personal asignado (cantidad):</strong> <span id="summary-staff-count">—</span></p>
+          <p><strong>Personal asignado (detalle):</strong> <span id="summary-staff-names">—</span></p>
+        </div>
+
+        <div style="margin-top: 0.6rem;">
+          <button
+            type="button"
+            id="summary-open-services"
+            class="btn btn-outline btn-xs"
+          >
+            <span class="material-symbols-outlined">tune</span>
+            <span class="btn-label">Ver / editar servicios</span>
+          </button>
+          <button
+            type="button"
+            id="summary-open-map"
+            class="btn btn-outline btn-xs"
+          >
+            <span class="material-symbols-outlined">map</span>
+            <span class="btn-label">Ver mapa</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Toolbar + listado de edificios como Data Grid -->
+      <section class="buildings-main-section">
+        <div class="section-header">
+          <h2>Listado de inmuebles</h2>
+
+          <button
+            type="button"
+            id="open-building-modal"
+            class="btn btn-primary"
+          >
+            <span class="material-symbols-outlined">add_home</span>
+            <span class="btn-label">Nuevo inmueble</span>
+          </button>
+        </div>
+
+        <p class="hint">
+          Selecciona un inmueble para gestionar sus unidades, inquilinos y recibos.
+        </p>
+
+        <!-- Buscador con autocompletado -->
+        <div class="building-toolbar">
+          <div class="search-field">
+            <span class="material-symbols-outlined">search</span>
+            <input
+              type="search"
+              id="building-search"
+              placeholder="Buscar por nombre o dirección..."
+              autocomplete="off"
+              list="building-search-options"
+            />
+            <datalist id="building-search-options"></datalist>
+          </div>
+        </div>
+
+        <!-- Contenedor del Data Grid -->
+        <div id="building-grid" class="mui-data-grid"></div>
+      </section>
+
+      <!-- Módulo de personal debajo del listado de inmuebles -->
+      <section id="staff-section-edificios">
+        <h2>Personal asignado al inmueble</h2>
+        <p>
+          Inmueble: <strong id="staff-building-label">Ninguno</strong><br />
+          Unidad: <strong id="staff-unit-label">Ninguna</strong>
+        </p>
+
+        <!-- Inputs ocultos para comunicar el edificio/unidad actual a staff.js -->
+        <input type="hidden" id="current-building-id" />
+        <input type="hidden" id="current-unit-id" />
+
+        <!-- Módulo dinámico de personal (creado por staff.js) -->
+        <div id="staff-module-root"></div>
+      </section>
+    </div>
+
+    <!-- ================== PÁGINA UNIDADES ================== -->
+    <div class="page page-unidades">
+      <h1>Unidades</h1>
+
+      <div class="back-row">
+        <button type="button" class="back-button" data-target="edificios">
+          ← Volver a inmuebles
+        </button>
+      </div>
+            <section>
+        <h2>Listado de unidades del inmueble</h2>
+        <p class="hint">
+          Haz clic en una unidad para ver y gestionar sus inquilinos y recibos.
+        </p>
+        <ul id="unit-list" class="list"></ul>
+      </section>
+
+      <!-- BLOQUE DE REPORTE: Inmueble + resumen + personal -->
+      <section class="unit-context-section">
+        <h2>Contexto del inmueble</h2>
+        <div class="unit-context-layout">
+          <!-- Columna izquierda: inmueble seleccionado + resumen de personal -->
+          <div class="context-card">
+            <h3>Inmueble seleccionado</h3>
+            <p>
+              Inmueble actual:
+              <strong id="selected-building">Ninguno</strong>
+            </p>
+            <p class="hint">
+              Primero selecciona un inmueble en la pestaña "Inmuebles". Luego podrás crear y editar sus unidades.
+            </p>
+
+            <hr style="margin:0.6rem 0; border:none; border-top:1px solid #e5e5e5;" />
+
+            <h3>Personal del inmueble (resumen)</h3>
+            <p>
+              <strong>Resumen:</strong>
+              <span id="units-summary-staff">—</span>
+            </p>
+          </div>
+
+          <!-- Columna derecha: resumen del inmueble + lista detallada de personal -->
+          <div class="context-card">
+            <h3>Resumen del inmueble</h3>
+            <div class="building-summary-grid">
+              <p><strong>Nombre:</strong> <span id="units-summary-building-name">Ninguno</span></p>
+              <p><strong>Tipo:</strong> <span id="units-summary-building-type">—</span></p>
+              <p><strong>Dirección:</strong> <span id="units-summary-building-address">—</span></p>
+
+              <p><strong>Medidor agua:</strong> <span id="units-summary-water-code">—</span></p>
+              <p><strong>Medidor gas:</strong> <span id="units-summary-gas-code">—</span></p>
+
+              <p><strong>Internet (código):</strong> <span id="units-summary-internet-code">—</span></p>
+              <p><strong>Proveedor internet:</strong> <span id="units-summary-internet-company">—</span></p>
+              <p><strong>Precio internet:</strong> <span id="units-summary-internet-price">—</span></p>
+
+              <p><strong>Ubicación (Maps):</strong> <span id="units-summary-maps-url">—</span></p>
+            </div>
+
+            <div style="margin-top: 0.6rem;">
+              <button
+                type="button"
+                id="units-summary-open-map"
+                class="btn btn-outline btn-xs"
+              >
+                <span class="material-symbols-outlined">map</span>
+                <span class="btn-label">Ver mapa</span>
+              </button>
+            </div>
+
+            <!-- Detalle de personal del inmueble (solo lectura) -->
+            <section id="units-staff-section" class="embedded-staff-section">
+              <h3>Personal del inmueble (detalle)</h3>
+              <p class="hint">
+                Listado del personal asociado al inmueble seleccionado. Solo lectura.
+              </p>
+              <ul id="units-staff-list" class="list"></ul>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toolbar para unidades (alta vía modal) -->
+      <section class="units-toolbar-section">
+        <div class="section-header">
+          <h2>Unidades del inmueble</h2>
+
+          <button
+            type="button"
+            id="open-unit-modal"
+            class="btn btn-primary"
+          >
+            <span class="material-symbols-outlined">add_home</span>
+            <span class="btn-label">Nueva unidad</span>
+          </button>
+        </div>
+
+        <p class="hint">
+          Primero selecciona un inmueble en la pestaña "Inmuebles". Luego puedes crear unidades desde este botón.
+        </p>
+      </section>
+    </div>
+
+    <!-- ================== PÁGINA INQUILINOS ================== -->
+    <div class="page page-inquilinos">
+      <h1>Inquilinos</h1>
+
+      <div class="back-row">
+        <button type="button" class="back-button" data-target="unidades">
+          ← Volver a unidades
+        </button>
+      </div>
+
+      <section>
+        <h2>Unidad seleccionada</h2>
+        <p>
+          Unidad actual:
+          <strong id="selected-unit">Ninguna</strong>
+        </p>
+        <p class="hint">
+          Primero selecciona un inmueble y una unidad en las pestañas anteriores. Luego podrás registrar los inquilinos de la unidad.
+        </p>
+      </section>
+
+      <section>
+        <h2>Historial de inquilinos de la unidad</h2>
+        <p class="hint">
+          Desde aquí podrás rescindir contratos, ver recibos del inquilino y seleccionar quién genera los próximos recibos.
+        </p>
+        <ul id="tenant-list" class="list"></ul>
+      </section>
+            <section>
+        <h2>Registrar / actualizar inquilino (contrato)</h2>
+        <p class="hint">
+          Solo puede haber un inquilino activo por unidad. Los anteriores quedarán registrados como historial.
+        </p>
+
+        <form id="tenant-form">
+          <label>
+            Nombre completo:
+            <input
+              type="text"
+              id="tenant-name"
+              required
+            />
+          </label>
+
+          <label>
+            Documento / DNI:
+            <input
+              type="text"
+              id="tenant-doc"
+            />
+          </label>
+
+          <label>
+            Teléfono:
+            <input
+              type="tel"
+              id="tenant-phone"
+            />
+          </label>
+
+          <label>
+            Email:
+            <input
+              type="email"
+              id="tenant-email"
+            />
+          </label>
+
+          <label>
+            Fecha inicio contrato:
+            <input
+              type="date"
+              id="tenant-start-date"
+            />
+          </label>
+
+          <label>
+            Fecha fin contrato:
+            <input
+              type="date"
+              id="tenant-end-date"
+            />
+          </label>
+
+          <label>
+            Monto mensual (alquiler):
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              id="tenant-monthly-amount"
+            />
+          </label>
+
+          <label style="flex: 1 1 100%;">
+            Observaciones / notas:
+            <textarea id="tenant-notes" rows="3"></textarea>
+          </label>
+
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar inquilino</span>
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <!-- ================== PÁGINA RECIBOS ================== -->
+    <div class="page page-recibos">
+      <h1>Recibos</h1>
+
+      <div class="back-row">
+        <button type="button" class="back-button" data-target="unidades">
+          ← Volver a unidades
+        </button>
+      </div>
+
+      <section>
+        <h2>Contexto</h2>
+        <p>
+          Inmueble:
+          <strong id="receipt-building">Ninguno</strong><br />
+          Unidad:
+          <strong id="receipt-unit">Ninguna</strong><br />
+          Inquilino activo:
+          <strong id="receipt-tenant">Ninguno</strong>
+        </p>
+        <p class="hint">
+          Para generar un recibo, primero debes seleccionar inmueble, unidad e inquilino desde las pestañas anteriores.
+        </p>
+      </section>
+
+      <section>
+        <h2>Generar recibo de alquiler</h2>
+        <form id="invoice-form">
+          <div class="invoice-grid">
+            <label>
+              Día:
+              <input
+                type="number"
+                id="invoice-day"
+                min="1"
+                max="31"
+              />
+            </label>
+
+            <label>
+              Mes:
+              <input
+                type="number"
+                id="invoice-month"
+                min="1"
+                max="12"
+              />
+            </label>
+
+            <label>
+              Año:
+              <input
+                type="number"
+                id="invoice-year"
+                min="2000"
+                max="2100"
+              />
+            </label>
+
+            <label>
+              Monto a pagar:
+              <input
+                type="number"
+                id="invoice-amount"
+                min="0"
+                step="0.01"
+              />
+            </label>
+
+            <label>
+              Estado del pago:
+              <select id="invoice-status">
+                <option value="pendiente">Pendiente</option>
+                <option value="pagado">Pagado</option>
+                <option value="parcial">Pago parcial</option>
+              </select>
+            </label>
+
+            <label style="grid-column: 1 / -1;">
+              Notas / detalle:
+              <textarea id="invoice-notes" rows="3"></textarea>
+            </label>
+          </div>
+
+            <button type="submit" class="btn btn-primary btn-xs">
+              <span class="material-symbols-outlined">receipt_long</span>
+              <span class="btn-label">Generar recibo</span>
+            </button>
+
+        </form>
+      </section>
+
+      <section>
+        <h2>Historial de recibos</h2>
+        <p class="hint">
+          Aquí podrás reimprimir recibos anteriores y marcar como pagados los que aún estén pendientes.
+        </p>
+        <ul id="invoice-list" class="list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- ================== MODALES ================== -->
+
+  <!-- Modal: Registrar edificio / casa -->
+  <div id="building-modal" class="modal-backdrop">
+    <div class="modal modal-medium">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">add_home</span>
+          <div>
+            <h3>Registrar inmueble</h3>
+            <p class="modal-subtitle">
+              Crea un nuevo edificio o casa. Luego podrás configurar servicios, mapa y personal.
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="building-modal-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="building-form" class="modal-body-grid">
+        <label>
+          Nombre:
+          <input
+            type="text"
+            id="building-name"
+            placeholder="Ej: VIZUR 6, Casa 123, etc."
+            required
+          />
+        </label>
+
+        <label>
+          Tipo:
+          <select id="building-type">
+            <option value="edificio">Edificio</option>
+            <option value="casa">Casa</option>
+            <option value="otro">Otro</option>
+          </select>
+        </label>
+
+        <label style="flex: 1 1 100%;">
+          Dirección:
+          <input
+            type="text"
+            id="building-address"
+            placeholder="Calle, número, referencia"
+            required
+          />
+        </label>
+
+        <label>
+          Código / medidor de agua:
+          <input
+            type="text"
+            id="building-water-code"
+            placeholder="Opcional"
+          />
+        </label>
+
+        <label>
+          Código / medidor de gas:
+          <input
+            type="text"
+            id="building-gas-code"
+            placeholder="Opcional"
+          />
+        </label>
+
+        <label>
+          Código de internet:
+          <input
+            type="text"
+            id="building-internet-code"
+            placeholder="Opcional"
+          />
+        </label>
+
+        <label>
+          Empresa de internet:
+          <input
+            type="text"
+            id="building-internet-company"
+            placeholder="Opcional"
+          />
+        </label>
+
+        <label>
+          Precio internet (monto mensual):
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            id="building-internet-price"
+            placeholder="0.00"
+          />
+        </label>
+
+        <label style="flex: 1 1 100%;">
+          URL / coordenadas de Google Maps (ubicación del inmueble):
+          <input
+            type="text"
+            id="building-maps-url"
+            placeholder="Pega aquí enlace, dirección o coordenadas (lat,lng)"
+          />
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="building-modal-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar inmueble</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Servicios de edificio -->
+  <div id="building-services-modal" class="modal-backdrop">
+    <div class="modal modal-medium">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">tune</span>
+          <div>
+            <h3>Servicios del inmueble</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="modal-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="building-services-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="building-services-form" class="modal-body-grid">
+        <input type="hidden" id="modal-building-id" />
+
+        <label>
+          Código / medidor de agua:
+          <input
+            type="text"
+            id="modal-water-code"
+          />
+        </label>
+
+        <label>
+          Código / medidor de gas:
+          <input
+            type="text"
+            id="modal-gas-code"
+          />
+        </label>
+
+        <label>
+          Código de internet:
+          <input
+            type="text"
+            id="modal-internet-code"
+          />
+        </label>
+
+        <label>
+          Empresa de internet:
+          <input
+            type="text"
+            id="modal-internet-company"
+          />
+        </label>
+
+        <label>
+          Precio internet (monto mensual):
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            id="modal-internet-price"
+          />
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="building-services-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar cambios</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Mapa de edificio -->
+  <div id="building-map-modal" class="modal-backdrop">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">map</span>
+          <div>
+            <h3>Ubicación del inmueble</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="map-modal-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="building-map-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="building-map-form" class="modal-map-grid">
+        <input type="hidden" id="modal-map-building-id" />
+
+        <div class="modal-map-left">
+          <h4>Ubicación</h4>
+          <label>
+            URL / coordenadas de Google Maps:
+            <input
+              type="text"
+              id="modal-maps-url"
+              placeholder="Pega enlace, dirección o coordenadas (-17.7,-63.1)"
+            />
+          </label>
+          <p class="hint" id="map-preview-hint">
+            Pega aquí una dirección, un enlace de Google Maps o las coordenadas.
+            El mapa se mostrará a la derecha.
+          </p>
+
+          <a
+            href="#"
+            target="_blank"
+            id="map-external-link"
+            class="btn btn-outline btn-xs map-external-link hidden"
+          >
+            <span class="material-symbols-outlined">open_in_new</span>
+            <span class="btn-label">Abrir en Google Maps</span>
+          </a>
+        </div>
+
+        <div class="modal-map-right">
+          <iframe
+            id="map-iframe"
+            src=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="modal-footer" style="grid-column: 1 / -1;">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="building-map-save"
+          >
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar ubicación</span>
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="building-map-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cerrar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal editar / crear unidad -->
+  <div id="unit-modal" class="modal-backdrop">
+    <div class="modal modal-medium">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">home</span>
+          <div>
+            <h3 id="unit-modal-title">Nueva unidad</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="unit-modal-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="unit-modal-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="unit-modal-form" class="modal-body-grid">
+        <input type="hidden" id="unit-modal-id" />
+
+        <label>
+          Nombre / número de unidad:
+          <input
+            type="text"
+            id="unit-modal-name"
+            required
+          />
+        </label>
+
+        <label>
+          Tipo de unidad:
+          <select id="unit-modal-type">
+            <option value="departamento">Departamento</option>
+            <option value="habitacion">Habitación</option>
+            <option value="casa_completa">Casa completa</option>
+          </select>
+        </label>
+
+        <label>
+          Estado:
+          <select id="unit-modal-status">
+            <option value="libre">Libre</option>
+            <option value="ocupado">Ocupado</option>
+          </select>
+        </label>
+
+        <label>
+          Código / medidor de luz:
+          <input
+            type="text"
+            id="unit-modal-electricity-code"
+          />
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="unit-modal-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Registrar / editar personal -->
+  <div id="staff-modal" class="modal-backdrop">
+    <div class="modal modal-medium">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">group</span>
+          <div>
+            <h3 id="staff-modal-title">Nuevo personal</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="staff-modal-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="staff-modal-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="staff-modal-form" class="modal-body-grid">
+        <input type="hidden" id="staff-modal-id" />
+
+        <label>
+          Nombre completo:
+          <input
+            type="text"
+            id="staff-modal-name"
+            required
+          />
+        </label>
+
+        <label>
+          Teléfono:
+          <input
+            type="tel"
+            id="staff-modal-phone"
+          />
+        </label>
+
+        <label>
+          Sueldo (monto mensual):
+          <input
+            type="number"
+            id="staff-modal-salary"
+            step="0.01"
+            min="0"
+          />
+        </label>
+
+        <label style="flex: 1 1 100%;">
+          Notas:
+          <textarea id="staff-modal-notes" rows="3"></textarea>
+        </label>
+
+        <label>
+          Activo:
+          <select id="staff-modal-active">
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="staff-modal-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================== SCRIPTS ================== -->
+  <!-- jsPDF (para PDFs de contrato y recibos) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Lógica principal -->
+  <script type="module" src="app.js"></script>
+  <!-- Módulo de personal -->
+  <script type="module" src="staff.js"></script>
+</body>
+</html>
