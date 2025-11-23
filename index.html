@@ -2,34 +2,64 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Gestor de Inmuebles</title>
 
-  <!-- Estilos propios -->
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Iconos de Material (sin React, solo fuente) -->
+  <!-- Iconos Material -->
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
   />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- NAV SPA (radios) -->
+  <input
+    type="radio"
+    name="spa-tab"
+    id="tab-edificios"
+    class="spa-tab-radio"
+    checked
+  />
+  <input
+    type="radio"
+    name="spa-tab"
+    id="tab-unidades"
+    class="spa-tab-radio"
+  />
+  <input
+    type="radio"
+    name="spa-tab"
+    id="tab-inquilinos"
+    class="spa-tab-radio"
+  />
+  <input
+    type="radio"
+    name="spa-tab"
+    id="tab-recibos"
+    class="spa-tab-radio"
+  />
+
+  <!-- TOPBAR -->
   <header class="topbar">
     <div class="logo-area">
       <span class="logo-mark">GI</span>
       <span class="logo-text">Gestor de Inmuebles</span>
     </div>
+
     <nav class="spa-nav">
       <label class="spa-tab-label" for="tab-edificios">
         <span class="material-symbols-outlined">apartment</span>
         <span class="nav-label-text">Inmuebles</span>
       </label>
       <label class="spa-tab-label" for="tab-unidades">
-        <span class="material-symbols-outlined">door_front</span>
+        <span class="material-symbols-outlined">meeting_room</span>
         <span class="nav-label-text">Unidades</span>
       </label>
       <label class="spa-tab-label" for="tab-inquilinos">
-        <span class="material-symbols-outlined">groups</span>
+        <span class="material-symbols-outlined">person</span>
         <span class="nav-label-text">Inquilinos</span>
       </label>
       <label class="spa-tab-label" for="tab-recibos">
@@ -39,54 +69,103 @@
     </nav>
   </header>
 
-  <!-- Radios ocultos para SPA -->
-  <input type="radio" name="spa-nav" id="tab-edificios" class="spa-tab-radio" checked>
-  <input type="radio" name="spa-nav" id="tab-unidades" class="spa-tab-radio">
-  <input type="radio" name="spa-nav" id="tab-inquilinos" class="spa-tab-radio">
-  <input type="radio" name="spa-nav" id="tab-recibos" class="spa-tab-radio">
-
+  <!-- MAIN -->
   <main class="spa-main">
-
-    <!-- PÁGINA: EDIFICIOS -->
-    <section class="page page-edificios">
+    <!-- ================== PÁGINA EDIFICIOS ================== -->
+    <div class="page page-edificios">
       <h1>Inmuebles</h1>
 
-      <!-- FORMULARIO: EDIFICIO / CASA -->
+      <!-- Formulario registrar edificio -->
       <section>
         <h2>Registrar edificio / casa</h2>
+        <p class="hint">
+          Completa los datos del inmueble. Puedes actualizar los servicios, el mapa y el personal más adelante desde la lista.
+        </p>
+
         <form id="building-form">
           <label>
             Nombre:
-            <input type="text" id="building-name" required />
+            <input
+              type="text"
+              id="building-name"
+              placeholder="Ej: VIZUR 6, Casa 123, etc."
+              required
+            />
           </label>
+
           <label>
             Tipo:
             <select id="building-type">
               <option value="edificio">Edificio</option>
               <option value="casa">Casa</option>
+              <option value="condominio">Condominio</option>
+              <option value="otro">Otro</option>
             </select>
           </label>
-          <label>
+
+          <label style="flex: 1 1 100%;">
             Dirección:
-            <input type="text" id="building-address" />
-          </label>
-          <label>
-            Código medidor de agua:
-            <input type="text" id="building-water-meter" />
+            <input
+              type="text"
+              id="building-address"
+              placeholder="Calle, número, referencia"
+            />
           </label>
 
-          <!-- NUEVOS CAMPOS OPCIONALES DE SERVICIOS DEL EDIFICIO -->
           <label>
-            Código internet (edificio):
-            <input type="text" id="building-internet-code" />
+            Código medidor de agua:
+            <input
+              type="text"
+              id="building-water-meter"
+              placeholder="Código de agua"
+            />
           </label>
-          <label>
-            Empresa / proveedor de internet:
-            <input type="text" id="building-internet-company" />
-          </label>
+
           <label>
             Código medidor de gas:
-            <input type="text" id="building-gas-code" />
+            <input
+              type="text"
+              id="building-gas-code"
+              placeholder="Código de gas"
+            />
+          </label>
+
+          <label>
+            Internet (edificio) - código:
+            <input
+              type="text"
+              id="building-internet-code"
+              placeholder="Código de internet"
+            />
+          </label>
+
+          <label>
+            Empresa / proveedor de internet:
+            <input
+              type="text"
+              id="building-internet-company"
+              placeholder="Nombre del proveedor"
+            />
+          </label>
+
+          <label>
+            Precio internet (monto mensual):
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              id="building-internet-price"
+              placeholder="0.00"
+            />
+          </label>
+
+          <label style="flex: 1 1 100%;">
+            URL / coordenadas de Google Maps (ubicación del inmueble):
+            <input
+              type="text"
+              id="building-maps-url"
+              placeholder="Pega aquí enlace, dirección o coordenadas (lat,lng)"
+            />
           </label>
 
           <button type="submit" class="btn btn-primary">
@@ -96,90 +175,144 @@
         </form>
       </section>
 
-      <!-- LISTA DE EDIFICIOS -->
+      <!-- Resumen del inmueble seleccionado -->
+      <section id="building-summary" class="hidden">
+        <h2>Resumen del inmueble seleccionado</h2>
+
+        <div class="building-summary-grid">
+          <p><strong>Nombre:</strong> <span id="summary-building-name">Ninguno</span></p>
+          <p><strong>Tipo:</strong> <span id="summary-building-type">—</span></p>
+          <p><strong>Dirección:</strong> <span id="summary-building-address">—</span></p>
+
+          <p><strong>Medidor agua:</strong> <span id="summary-water-code">—</span></p>
+          <p><strong>Medidor gas:</strong> <span id="summary-gas-code">—</span></p>
+
+          <p><strong>Internet (código):</strong> <span id="summary-internet-code">—</span></p>
+          <p><strong>Proveedor internet:</strong> <span id="summary-internet-company">—</span></p>
+          <p><strong>Precio internet:</strong> <span id="summary-internet-price">—</span></p>
+
+          <p><strong>Ubicación (Maps):</strong> <span id="summary-maps-url">—</span></p>
+          <p><strong>Personal asignado (cantidad):</strong> <span id="summary-staff-count">—</span></p>
+          <p><strong>Personal asignado (detalle):</strong> <span id="summary-staff-names">—</span></p>
+        </div>
+
+        <div style="margin-top: 0.6rem;">
+          <button
+            type="button"
+            id="summary-open-map"
+            class="btn btn-outline btn-xs"
+          >
+            <span class="material-symbols-outlined">map</span>
+            <span class="btn-label">Ver mapa</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Lista de edificios -->
       <section>
         <h2>Listado de inmuebles</h2>
         <p class="hint">
-          Haz clic en el nombre para ir a sus unidades, o pulsa el botón "Personal"
-          para ver/registrar personal de servicio sin salir de esta pestaña.
+          Haz clic en el nombre de un inmueble para trabajar sus unidades, inquilinos y recibos.
         </p>
+
         <ul id="building-list" class="list"></ul>
       </section>
 
-      <!-- PERSONAL ASIGNADO AL EDIFICIO -->
-      <section>
-        <h3>Personal asignado al inmueble</h3>
+      <!-- ===== PERSONAL SOLO EN INMUEBLES ===== -->
+      <section id="staff-section-edificios">
+        <h2>Personal asignado al inmueble</h2>
         <p>
-          Inmueble actual (personal):
-          <strong id="staff-building-label">Ninguno</strong>
+          Inmueble: <strong id="staff-building-label">Ninguno</strong><br />
+          Unidad: <strong id="staff-unit-label">Ninguna</strong>
         </p>
 
-        <!-- edificio actual seleccionado para staff.js -->
+        <!-- Inputs ocultos para comunicar el edificio/unidad actual a staff.js -->
         <input type="hidden" id="current-building-id" />
+        <input type="hidden" id="current-unit-id" />
 
-        <form id="staff-form">
-          <label>
-            Tipo de personal:
-            <select id="staff-type">
-              <option value="limpieza">Limpieza</option>
-              <option value="plomeria">Plomería</option>
-              <option value="electrico">Eléctrico</option>
-              <option value="general">Personal general</option>
-            </select>
-          </label>
-          <label>
-            Nombre:
-            <input type="text" id="staff-name" required />
-          </label>
-          <label>
-            Teléfono:
-            <input type="text" id="staff-phone" />
-          </label>
-          <label>
-            Notas / detalle:
-            <input type="text" id="staff-notes" />
-          </label>
-          <button type="submit" class="btn btn-primary">
-            <span class="material-symbols-outlined">person_add</span>
-            <span class="btn-label">Agregar personal</span>
-          </button>
-        </form>
-
-        <h4>Listado de personal del inmueble</h4>
-        <ul id="staff-list" class="list"></ul>
+        <!-- Módulo dinámico de personal (creado por staff.js) -->
+        <div id="staff-module-root"></div>
       </section>
-    </section>
+    </div>
 
-    <!-- PÁGINA: UNIDADES -->
-    <section class="page page-unidades">
+    <!-- ================== PÁGINA UNIDADES ================== -->
+    <div class="page page-unidades">
       <div class="page-header-with-back">
-        <label for="tab-edificios" class="back-button">
+        <button
+          type="button"
+          class="back-button"
+          onclick="document.getElementById('tab-edificios').checked = true;"
+        >
           <span class="material-symbols-outlined">arrow_back</span>
-          <span class="btn-label">Inmuebles</span>
-        </label>
+          <span>Inmuebles</span>
+        </button>
         <h1>Unidades</h1>
       </div>
 
-      <!-- UNIDADES DEL INMUEBLE -->
       <section>
-        <h2>Unidades del inmueble seleccionado</h2>
+        <h2>Inmueble seleccionado</h2>
         <p>
-          Inmueble seleccionado:
-          <strong id="selected-building">Ninguno</strong>
+          Inmueble actual: <strong id="selected-building">Ninguno</strong>
         </p>
+        <p class="hint">
+          Selecciona un inmueble en la pestaña “Inmuebles” para gestionar sus unidades.
+        </p>
+      </section>
 
+      <!-- Resumen del inmueble en pestaña Unidades -->
+      <section class="building-summary-card">
+        <h3>Resumen del inmueble</h3>
+        <div class="building-summary-grid">
+          <p><strong>Nombre:</strong> <span id="units-summary-building-name">Ninguno</span></p>
+          <p><strong>Tipo:</strong> <span id="units-summary-building-type">—</span></p>
+          <p><strong>Dirección:</strong> <span id="units-summary-building-address">—</span></p>
+
+          <p><strong>Medidor agua:</strong> <span id="units-summary-water-code">—</span></p>
+          <p><strong>Medidor gas:</strong> <span id="units-summary-gas-code">—</span></p>
+
+          <p><strong>Internet (código):</strong> <span id="units-summary-internet-code">—</span></p>
+          <p><strong>Proveedor internet:</strong> <span id="units-summary-internet-company">—</span></p>
+          <p><strong>Precio internet:</strong> <span id="units-summary-internet-price">—</span></p>
+
+          <p><strong>Ubicación (Maps):</strong> <span id="units-summary-maps-url">—</span></p>
+
+        </div>
+
+        <div style="margin-top: 0.6rem;">
+          <button
+            type="button"
+            id="units-summary-open-map"
+            class="btn btn-outline btn-xs"
+          >
+            <span class="material-symbols-outlined">map</span>
+            <span class="btn-label">Ver mapa</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Formulario unidad -->
+      <section>
+        <h2>Registrar unidad</h2>
         <form id="unit-form">
           <label>
-            Número / nombre de la unidad:
-            <input type="text" id="unit-name" required />
+            Nombre / número de unidad:
+            <input
+              type="text"
+              id="unit-name"
+              placeholder="Ej: Dpto 1A, Hab 3, etc."
+              required
+            />
           </label>
+
           <label>
             Tipo de unidad:
             <select id="unit-type">
               <option value="departamento">Departamento</option>
               <option value="habitacion">Habitación</option>
+              <option value="casa_completa">Casa completa</option>
             </select>
           </label>
+
           <label>
             Estado:
             <select id="unit-status">
@@ -187,109 +320,187 @@
               <option value="ocupado">Ocupado</option>
             </select>
           </label>
+
           <label>
             Código medidor de luz:
-            <input type="text" id="unit-electric-code" />
+            <input
+              type="text"
+              id="unit-electric-code"
+              placeholder="Código de luz"
+            />
           </label>
+
           <button type="submit" class="btn btn-primary">
-            <span class="material-symbols-outlined">add_home</span>
+            <span class="material-symbols-outlined">add</span>
             <span class="btn-label">Agregar unidad</span>
           </button>
         </form>
+      </section>
 
-        <h3>Listado de unidades</h3>
-        <p class="hint">Haz clic en una unidad para ver sus inquilinos y recibos.</p>
+      <!-- Lista unidades -->
+      <section>
+        <h2>Listado de unidades</h2>
+        <p class="hint">
+          Haz clic en una unidad para ver sus inquilinos y recibos.
+        </p>
         <ul id="unit-list" class="list"></ul>
       </section>
-    </section>
 
-    <!-- PÁGINA: INQUILINOS -->
-    <section class="page page-inquilinos">
+      <!-- Aquí staff.js agregará la sección "units-staff-section" con la lista de personal -->
+    </div>
+
+    <!-- ================== PÁGINA INQUILINOS ================== -->
+    <div class="page page-inquilinos">
       <div class="page-header-with-back">
-        <label for="tab-unidades" class="back-button">
+        <button
+          type="button"
+          class="back-button"
+          onclick="document.getElementById('tab-unidades').checked = true;"
+        >
           <span class="material-symbols-outlined">arrow_back</span>
-          <span class="btn-label">Unidades</span>
-        </label>
+          <span>Unidades</span>
+        </button>
         <h1>Inquilinos</h1>
       </div>
 
       <section>
-        <h2>Inquilinos de la unidad seleccionada</h2>
+        <h2>Unidad seleccionada</h2>
         <p>
-          Unidad seleccionada:
-          <strong id="selected-unit">Ninguna</strong>
+          Unidad actual: <strong id="selected-unit">Ninguna</strong>
         </p>
+        <p class="hint">
+          Selecciona una unidad en la pestaña “Unidades” para gestionar sus inquilinos.
+        </p>
+      </section>
 
+      <section>
+        <h2>Registrar contrato de alquiler</h2>
         <form id="tenant-form">
           <label>
             Nombre completo:
-            <input type="text" id="tenant-name" required />
+            <input
+              type="text"
+              id="tenant-name"
+              required
+            />
           </label>
+
           <label>
             Documento / DNI:
-            <input type="text" id="tenant-doc" />
+            <input
+              type="text"
+              id="tenant-doc"
+            />
           </label>
+
           <label>
             Teléfono:
-            <input type="text" id="tenant-phone" />
+            <input
+              type="text"
+              id="tenant-phone"
+            />
           </label>
+
           <label>
             Email:
-            <input type="email" id="tenant-email" />
+            <input
+              type="email"
+              id="tenant-email"
+            />
           </label>
+
           <label>
-            Fecha inicio alquiler:
-            <input type="date" id="tenant-start-date" />
+            Fecha inicio:
+            <input
+              type="date"
+              id="tenant-start-date"
+              required
+            />
           </label>
+
           <label>
-            Fecha fin contrato:
-            <input type="date" id="tenant-end-date" />
+            Fecha fin:
+            <input
+              type="date"
+              id="tenant-end-date"
+              required
+            />
           </label>
+
           <label>
             Monto alquiler mensual:
-            <input type="number" id="tenant-rent" step="0.01" />
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              id="tenant-rent"
+              required
+            />
           </label>
-          <label>
+
+          <label style="flex: 1 1 100%;">
             Notas del contrato:
-            <textarea id="tenant-notes" rows="2" placeholder="Ej: viene con mascotas, descuento, condiciones especiales..."></textarea>
+            <textarea
+              id="tenant-notes"
+              rows="2"
+              placeholder="Cláusulas adicionales, observaciones, etc."
+            ></textarea>
           </label>
 
           <button type="submit" class="btn btn-primary">
             <span class="material-symbols-outlined">person_add</span>
-            <span class="btn-label">Agregar inquilino</span>
+            <span class="btn-label">Registrar contrato</span>
           </button>
         </form>
+      </section>
 
-        <h3>Listado de inquilinos</h3>
+      <section>
+        <h2>Historial de inquilinos de la unidad</h2>
         <ul id="tenant-list" class="list"></ul>
       </section>
-    </section>
+    </div>
 
-    <!-- PÁGINA: RECIBOS -->
-    <section class="page page-recibos">
+    <!-- ================== PÁGINA RECIBOS ================== -->
+    <div class="page page-recibos">
       <div class="page-header-with-back">
-        <label for="tab-inquilinos" class="back-button">
+        <button
+          type="button"
+          class="back-button"
+          onclick="document.getElementById('tab-inquilinos').checked = true;"
+        >
           <span class="material-symbols-outlined">arrow_back</span>
-          <span class="btn-label">Inquilinos</span>
-        </label>
+          <span>Inquilinos</span>
+        </button>
         <h1>Recibos</h1>
       </div>
 
       <section>
-        <h2>Generar recibos</h2>
+        <h2>Contexto</h2>
         <p>
-          Unidad actual:
-          <strong id="invoice-unit-label">Ninguna</strong><br />
-          Inquilino:
-          <strong id="invoice-tenant-label">Ninguno</strong>
+          Unidad: <strong id="invoice-unit-label">Ninguna</strong><br />
+          Inquilino: <strong id="invoice-tenant-label">Ninguno</strong>
         </p>
+        <p class="hint">
+          Debe existir una unidad ocupada con un inquilino activo para poder generar un recibo.
+        </p>
+      </section>
+
+      <section>
+        <h2>Generar recibo</h2>
 
         <form id="invoice-form" class="form-grid">
           <div class="inline-fields">
             <label>
               Día:
-              <input type="number" id="invoice-day" min="1" max="31" placeholder="Ej: 5" />
+              <input
+                type="number"
+                id="invoice-day"
+                min="1"
+                max="31"
+                placeholder="Opcional"
+              />
             </label>
+
             <label>
               Mes:
               <select id="invoice-month">
@@ -307,66 +518,456 @@
                 <option value="12">12</option>
               </select>
             </label>
+
             <label>
               Año:
               <select id="invoice-year"></select>
             </label>
+
+            <label>
+              Estado:
+              <select id="invoice-status">
+                <option value="pendiente">Pendiente</option>
+                <option value="pagado">Pagado</option>
+              </select>
+            </label>
           </div>
 
-          <label>
-            Importe alquiler:
-            <input type="number" id="rent-amount" min="0" step="0.01" value="0" />
-          </label>
-          <label>
-            Importe luz:
-            <input type="number" id="electricity-amount" min="0" step="0.01" value="0" />
-          </label>
-          <label>
-            Importe agua:
-            <input type="number" id="water-amount" min="0" step="0.01" value="0" />
-          </label>
-          <label>
-            Otros conceptos:
-            <input type="number" id="other-amount" min="0" step="0.01" value="0" />
-          </label>
-          <label>
-            Estado de pago:
-            <select id="invoice-status">
-              <option value="pendiente">Pendiente</option>
-              <option value="pagado">Pagado</option>
-            </select>
-          </label>
+          <div class="inline-fields">
+            <label>
+              Alquiler:
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                id="rent-amount"
+                value="0"
+              />
+            </label>
+
+            <label>
+              Luz:
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                id="electricity-amount"
+                value="0"
+              />
+            </label>
+
+            <label>
+              Agua:
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                id="water-amount"
+                value="0"
+              />
+            </label>
+
+            <label>
+              Otros:
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                id="other-amount"
+                value="0"
+              />
+            </label>
+          </div>
+
           <label>
             Notas del recibo:
             <textarea
               id="invoice-notes"
-              rows="3"
-              placeholder="Ej: Pagó en efectivo, incluye deuda anterior, etc."
+              rows="2"
+              placeholder="Ej: Incluye penalización por retraso, etc."
             ></textarea>
           </label>
+
           <button type="submit" class="btn btn-primary">
-            <span class="material-symbols-outlined">picture_as_pdf</span>
-            <span class="btn-label">Generar recibo + PDF</span>
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span class="btn-label">Generar recibo</span>
           </button>
         </form>
-
       </section>
 
       <section>
-        <h2>Listado de recibos</h2>
+        <h2>Historial de recibos</h2>
         <ul id="invoice-list" class="list"></ul>
       </section>
-    </section>
-
+    </div>
   </main>
 
-  <!-- jsPDF para generar PDF -->
+  <!-- ================== MODALES ================== -->
+
+  <!-- Modal Servicios de edificio -->
+  <div id="building-services-modal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">tune</span>
+          <div>
+            <h3>Servicios del inmueble</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="modal-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="building-services-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="building-services-form" class="modal-body-grid">
+        <input type="hidden" id="modal-building-id" />
+
+        <label>
+          Código medidor de agua:
+          <input
+            type="text"
+            id="modal-water-code"
+          />
+        </label>
+
+        <label>
+          Código medidor de gas:
+          <input
+            type="text"
+            id="modal-gas-code"
+          />
+        </label>
+
+        <label>
+          Internet (edificio) - código:
+          <input
+            type="text"
+            id="modal-internet-code"
+          />
+        </label>
+
+        <label>
+          Empresa / proveedor de internet:
+          <input
+            type="text"
+            id="modal-internet-company"
+          />
+        </label>
+
+        <label>
+          Precio internet (monto mensual):
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            id="modal-internet-price"
+          />
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="building-services-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar cambios</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Mapa -->
+  <div id="building-map-modal" class="modal-backdrop">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">map</span>
+          <div>
+            <h3>Mapa del inmueble</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="modal-map-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="building-map-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="building-map-form" class="modal-map-grid">
+        <input type="hidden" id="modal-map-building-id" />
+
+        <div class="modal-map-left">
+          <h4>Ubicación</h4>
+          <label>
+            URL / coordenadas de Google Maps:
+            <input
+              type="text"
+              id="modal-maps-url"
+              placeholder="Pega enlace, dirección o coordenadas (-17.7,-63.1)"
+            />
+          </label>
+          <p class="hint" id="map-preview-hint">
+            Pega aquí una dirección, un enlace de Google Maps o las coordenadas.
+            El mapa se mostrará a la derecha.
+          </p>
+
+          <a
+            id="map-open-link"
+            href="#"
+            target="_blank"
+            class="btn btn-outline btn-xs"
+            style="margin-top: 0.5rem; display: none;"
+          >
+            <span class="material-symbols-outlined">open_in_new</span>
+            <span class="btn-label">Abrir en Google Maps</span>
+          </a>
+        </div>
+
+        <div class="modal-map-right">
+          <h4>Vista previa</h4>
+          <div id="map-preview-placeholder" class="map-preview-placeholder">
+            <span class="material-symbols-outlined">map</span>
+            <p>Pega una dirección o coordenadas para ver el mapa aquí.</p>
+          </div>
+          <iframe
+            id="map-preview-frame"
+            class="map-preview-frame"
+            style="display: none;"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="modal-footer modal-footer-right">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="building-map-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar ubicación</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Unidad -->
+  <div id="unit-modal" class="modal-backdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">meeting_room</span>
+          <div>
+            <h3>Editar unidad</h3>
+            <p class="modal-subtitle">
+              Inmueble: <span id="unit-modal-building-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="unit-modal-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="unit-modal-form" class="modal-body-grid">
+        <input type="hidden" id="unit-modal-id" />
+
+        <label>
+          Nombre / número de unidad:
+          <input
+            type="text"
+            id="unit-modal-name"
+            required
+          />
+        </label>
+
+        <label>
+          Tipo de unidad:
+          <select id="unit-modal-type">
+            <option value="departamento">Departamento</option>
+            <option value="habitacion">Habitación</option>
+            <option value="casa_completa">Casa completa</option>
+          </select>
+        </label>
+
+        <label>
+          Estado:
+          <select id="unit-modal-status">
+            <option value="libre">Libre</option>
+            <option value="ocupado">Ocupado</option>
+          </select>
+        </label>
+
+        <label>
+          Código medidor de luz:
+          <input
+            type="text"
+            id="unit-modal-electric"
+          />
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="unit-modal-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar cambios</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Inquilino -->
+  <div id="tenant-modal" class="modal-backdrop">
+    <div class="modal modal-medium">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span class="material-symbols-outlined">person</span>
+          <div>
+            <h3>Editar inquilino</h3>
+            <p class="modal-subtitle">
+              Unidad: <span id="tenant-modal-unit-name">—</span>
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="icon-button"
+          id="tenant-modal-close"
+        >
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <form id="tenant-modal-form" class="modal-body-grid">
+        <input type="hidden" id="tenant-modal-id" />
+
+        <label>
+          Nombre completo:
+          <input
+            type="text"
+            id="tenant-modal-name"
+            required
+          />
+        </label>
+
+        <label>
+          Documento / DNI:
+          <input
+            type="text"
+            id="tenant-modal-doc"
+          />
+        </label>
+
+        <label>
+          Teléfono:
+          <input
+            type="text"
+            id="tenant-modal-phone"
+          />
+        </label>
+
+        <label>
+          Email:
+          <input
+            type="email"
+            id="tenant-modal-email"
+          />
+        </label>
+
+        <label>
+          Fecha inicio:
+          <input
+            type="date"
+            id="tenant-modal-start"
+          />
+        </label>
+
+        <label>
+          Fecha fin:
+          <input
+            type="date"
+            id="tenant-modal-end"
+          />
+        </label>
+
+        <label>
+          Monto alquiler mensual:
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            id="tenant-modal-rent"
+          />
+        </label>
+
+        <label style="grid-column: 1 / -1;">
+          Notas del contrato:
+          <textarea
+            id="tenant-modal-notes"
+            rows="3"
+          ></textarea>
+        </label>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="tenant-modal-cancel"
+          >
+            <span class="material-symbols-outlined">close</span>
+            <span class="btn-label">Cancelar</span>
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <span class="material-symbols-outlined">save</span>
+            <span class="btn-label">Guardar cambios</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================== SCRIPTS ================== -->
+  <!-- jsPDF (para PDFs de contrato y recibos) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- Lógica principal de alquileres -->
+  <!-- Lógica principal -->
   <script type="module" src="app.js"></script>
-
-  <!-- Lógica de personal de servicio (por edificio) -->
+  <!-- Módulo de personal -->
   <script type="module" src="staff.js"></script>
 </body>
 </html>
