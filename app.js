@@ -26,8 +26,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ----- DOM -----
-// edificios
+// ========================= DOM =========================
+// ----- EDIFICIOS -----
 const buildingForm = document.getElementById("building-form");
 const buildingNameInput = document.getElementById("building-name");
 const buildingTypeSelect = document.getElementById("building-type");
@@ -37,8 +37,24 @@ const buildingWaterMeterInput = document.getElementById("building-water-meter");
 const buildingInternetCodeInput = document.getElementById("building-internet-code");
 const buildingInternetCompanyInput = document.getElementById("building-internet-company");
 const buildingGasCodeInput = document.getElementById("building-gas-code");
+const buildingInternetPriceInput = document.getElementById("building-internet-price");
+const buildingMapsUrlInput = document.getElementById("building-maps-url");
 
-// unidades
+// Resumen principal de inmueble (en pestaña Inmuebles, si existe)
+const buildingSummarySection = document.getElementById("building-summary");
+const summaryBuildingName = document.getElementById("summary-building-name");
+const summaryBuildingType = document.getElementById("summary-building-type");
+const summaryBuildingAddress = document.getElementById("summary-building-address");
+const summaryWaterCode = document.getElementById("summary-water-code");
+const summaryInternetCode = document.getElementById("summary-internet-code");
+const summaryInternetCompany = document.getElementById("summary-internet-company");
+const summaryInternetPrice = document.getElementById("summary-internet-price");
+const summaryGasCode = document.getElementById("summary-gas-code");
+const summaryMapsUrl = document.getElementById("summary-maps-url");
+const summaryStaffCount = document.getElementById("summary-staff-count");
+const summaryOpenMapBtn = document.getElementById("summary-open-map");
+
+// ----- UNIDADES -----
 const selectedBuildingLabel = document.getElementById("selected-building");
 const unitForm = document.getElementById("unit-form");
 const unitNameInput = document.getElementById("unit-name");
@@ -47,7 +63,20 @@ const unitStatusSelect = document.getElementById("unit-status");
 const unitElectricCodeInput = document.getElementById("unit-electric-code");
 const unitList = document.getElementById("unit-list");
 
-// inquilinos
+// Resumen del inmueble en pestaña Unidades
+const unitsSummaryBuildingName = document.getElementById("units-summary-building-name");
+const unitsSummaryBuildingType = document.getElementById("units-summary-building-type");
+const unitsSummaryBuildingAddress = document.getElementById("units-summary-building-address");
+const unitsSummaryWaterCode = document.getElementById("units-summary-water-code");
+const unitsSummaryInternetCode = document.getElementById("units-summary-internet-code");
+const unitsSummaryInternetCompany = document.getElementById("units-summary-internet-company");
+const unitsSummaryInternetPrice = document.getElementById("units-summary-internet-price");
+const unitsSummaryGasCode = document.getElementById("units-summary-gas-code");
+const unitsSummaryMapsUrl = document.getElementById("units-summary-maps-url");
+const unitsSummaryStaff = document.getElementById("units-summary-staff");
+const unitsSummaryOpenMapBtn = document.getElementById("units-summary-open-map");
+
+// ----- INQUILINOS -----
 const selectedUnitLabel = document.getElementById("selected-unit");
 const tenantForm = document.getElementById("tenant-form");
 const tenantNameInput = document.getElementById("tenant-name");
@@ -60,7 +89,7 @@ const tenantRentInput = document.getElementById("tenant-rent");
 const tenantNotesInput = document.getElementById("tenant-notes");
 const tenantList = document.getElementById("tenant-list");
 
-// recibos
+// ----- RECIBOS -----
 const invoiceForm = document.getElementById("invoice-form");
 const invoiceUnitLabel = document.getElementById("invoice-unit-label");
 const invoiceTenantLabel = document.getElementById("invoice-tenant-label");
@@ -75,17 +104,79 @@ const otherAmountInput = document.getElementById("other-amount");
 const invoiceStatusSelect = document.getElementById("invoice-status");
 const invoiceList = document.getElementById("invoice-list");
 
-// ----- ESTADO GLOBAL -----
+// ----- MODAL SERVICIOS DE EDIFICIO -----
+const buildingServicesModal = document.getElementById("building-services-modal");
+const buildingServicesForm = document.getElementById("building-services-form");
+const buildingServicesCloseBtn = document.getElementById("building-services-close");
+const buildingServicesCancelBtn = document.getElementById("building-services-cancel");
+const modalBuildingIdInput = document.getElementById("modal-building-id");
+const modalBuildingNameLabel = document.getElementById("modal-building-name");
+const modalWaterCodeInput = document.getElementById("modal-water-code");
+const modalInternetCodeInput = document.getElementById("modal-internet-code");
+const modalInternetCompanyInput = document.getElementById("modal-internet-company");
+const modalInternetPriceInput = document.getElementById("modal-internet-price");
+const modalGasCodeInput = document.getElementById("modal-gas-code");
+
+// ----- MODAL MAPA -----
+const buildingMapModal = document.getElementById("building-map-modal");
+const buildingMapForm = document.getElementById("building-map-form");
+const buildingMapCloseBtn = document.getElementById("building-map-close");
+const buildingMapCancelBtn = document.getElementById("building-map-cancel");
+const modalMapBuildingIdInput = document.getElementById("modal-map-building-id");
+const modalMapBuildingNameLabel = document.getElementById("modal-map-building-name");
+const modalMapsUrlInput = document.getElementById("modal-maps-url");
+const mapPreviewFrame = document.getElementById("map-preview-frame");
+const mapOpenLink = document.getElementById("map-open-link");
+
+// ----- MODAL UNIDAD -----
+const unitModal = document.getElementById("unit-modal");
+const unitModalForm = document.getElementById("unit-modal-form");
+const unitModalIdInput = document.getElementById("unit-modal-id");
+const unitModalNameInput = document.getElementById("unit-modal-name");
+const unitModalTypeSelect = document.getElementById("unit-modal-type");
+const unitModalStatusSelect = document.getElementById("unit-modal-status");
+const unitModalElectricInput = document.getElementById("unit-modal-electric");
+const unitModalBuildingNameLabel = document.getElementById("unit-modal-building-name");
+const unitModalCloseBtn = document.getElementById("unit-modal-close");
+const unitModalCancelBtn = document.getElementById("unit-modal-cancel");
+
+// ----- MODAL INQUILINO -----
+const tenantModal = document.getElementById("tenant-modal");
+const tenantModalForm = document.getElementById("tenant-modal-form");
+const tenantModalIdInput = document.getElementById("tenant-modal-id");
+const tenantModalNameInput = document.getElementById("tenant-modal-name");
+const tenantModalDocInput = document.getElementById("tenant-modal-doc");
+const tenantModalPhoneInput = document.getElementById("tenant-modal-phone");
+const tenantModalEmailInput = document.getElementById("tenant-modal-email");
+const tenantModalStartInput = document.getElementById("tenant-modal-start");
+const tenantModalEndInput = document.getElementById("tenant-modal-end");
+const tenantModalRentInput = document.getElementById("tenant-modal-rent");
+const tenantModalNotesInput = document.getElementById("tenant-modal-notes");
+const tenantModalUnitNameLabel = document.getElementById("tenant-modal-unit-name");
+const tenantModalCloseBtn = document.getElementById("tenant-modal-close");
+const tenantModalCancelBtn = document.getElementById("tenant-modal-cancel");
+
+// ----- CAMPOS OCULTOS PARA STAFF (staff.js) -----
+const staffBuildingLabel = document.getElementById("staff-building-label");
+const staffUnitLabel = document.getElementById("staff-unit-label");
+const currentBuildingHidden = document.getElementById("current-building-id");
+const currentUnitHidden = document.getElementById("current-unit-id");
+
+// ========================= ESTADO GLOBAL =========================
 let selectedBuildingId = null;
 let selectedBuildingName = null;
+let selectedBuildingData = null;
+
 let selectedUnitId = null;
 let selectedUnitName = null;
 let selectedUnitStatus = null;
+
 let activeTenantId = null;
 let activeTenantName = null;
 
-// ===== UTILIDADES =====
+// ========================= UTILIDADES =========================
 function setTenantFormEnabled(enabled) {
+  if (!tenantForm) return;
   const elements = tenantForm.querySelectorAll("input, button, textarea");
   elements.forEach((el) => {
     el.disabled = !enabled;
@@ -103,6 +194,7 @@ function setTenantFormEnabled(enabled) {
 }
 
 function setInvoiceFormEnabled(enabled) {
+  if (!invoiceForm) return;
   const elements = invoiceForm.querySelectorAll("input, button, select, textarea");
   elements.forEach((el) => {
     el.disabled = !enabled;
@@ -127,11 +219,304 @@ function initYearSelector() {
 }
 
 initYearSelector();
-
 setTenantFormEnabled(false);
 setInvoiceFormEnabled(false);
 
-// ===== EDIFICIOS =====
+// Formatear fecha ISO a dd/mm/yyyy
+function formatearFechaISO(iso) {
+  if (!iso) return "";
+  const partes = iso.split("-");
+  if (partes.length !== 3) return iso;
+  const [y, m, d] = partes;
+  return `${d}/${m}/${y}`;
+}
+
+// Construir URL de embed de Google Maps a partir de enlace / dirección / coordenadas
+function buildEmbedMapUrlFromInput(raw) {
+  const trimmed = (raw || "").trim();
+  if (!trimmed) return "";
+
+  // @lat,lng
+  let m = trimmed.match(/@(-?\d+\.?\d*),\s*(-?\d+\.?\d*)/);
+  if (m) {
+    const lat = m[1];
+    const lng = m[2];
+    return `https://www.google.com/maps?q=${lat},${lng}&output=embed`;
+  }
+
+  // !3dLAT!4dLNG
+  m = trimmed.match(/!3d(-?\d+\.?\d*)!4d(-?\d+\.?\d*)/);
+  if (m) {
+    const lat = m[1];
+    const lng = m[2];
+    return `https://www.google.com/maps?q=${lat},${lng}&output=embed`;
+  }
+
+  // Búsqueda genérica
+  return `https://www.google.com/maps?q=${encodeURIComponent(trimmed)}&output=embed`;
+}
+
+// Actualizar preview de mapa en el modal
+function updateMapPreview(url) {
+  if (!mapPreviewFrame || !mapOpenLink) return;
+
+  const trimmed = (url || "").trim();
+  const hintEl = document.getElementById("map-preview-hint");
+  const placeholder = document.getElementById("map-preview-placeholder");
+
+  if (!trimmed) {
+    mapPreviewFrame.src = "";
+    mapPreviewFrame.style.display = "none";
+    mapOpenLink.href = "#";
+    mapOpenLink.style.display = "none";
+    if (hintEl) {
+      hintEl.textContent =
+        "Pega aquí una dirección, un enlace de Google Maps o las coordenadas. El mapa se mostrará a la derecha.";
+    }
+    if (placeholder) placeholder.style.display = "flex";
+    return;
+  }
+
+  // Botón "Abrir en Google Maps" usa el texto original
+  mapOpenLink.href = trimmed;
+  mapOpenLink.style.display = "inline-flex";
+
+  const embedSrc = buildEmbedMapUrlFromInput(trimmed);
+
+  mapPreviewFrame.src = embedSrc;
+  mapPreviewFrame.style.display = "block";
+  if (placeholder) placeholder.style.display = "none";
+  if (hintEl) {
+    hintEl.textContent =
+      "Este mapa corresponde al lugar del enlace/dirección que pegaste. Puedes moverlo y hacer zoom desde aquí.";
+  }
+}
+
+// ========================= MODALES: OPEN / CLOSE =========================
+function openBuildingServicesModal(buildingId, data) {
+  if (!buildingServicesModal || !buildingServicesForm) return;
+
+  modalBuildingIdInput.value = buildingId;
+  modalBuildingNameLabel.textContent = data?.nombre || "Inmueble";
+  modalWaterCodeInput.value = data?.codigoAgua || "";
+  modalInternetCodeInput.value = data?.codigoInternet || "";
+  modalInternetCompanyInput.value = data?.empresaInternet || "";
+  modalInternetPriceInput.value =
+    data?.internetPrice != null ? String(data.internetPrice) : "";
+  modalGasCodeInput.value = data?.codigoGas || "";
+
+  buildingServicesModal.classList.add("visible");
+}
+
+function closeBuildingServicesModal() {
+  if (!buildingServicesModal) return;
+  buildingServicesModal.classList.remove("visible");
+}
+
+function openMapForBuilding(buildingId, data) {
+  if (!buildingMapModal || !buildingMapForm) return;
+
+  modalMapBuildingIdInput.value = buildingId;
+  modalMapBuildingNameLabel.textContent = data?.nombre || "Inmueble";
+  modalMapsUrlInput.value = data?.mapsUrl || "";
+
+  buildingMapModal.classList.add("visible");
+  updateMapPreview(data?.mapsUrl || "");
+}
+
+function closeBuildingMapModal() {
+  if (!buildingMapModal) return;
+  buildingMapModal.classList.remove("visible");
+}
+
+function openUnitModal(unitId, data) {
+  if (!unitModal || !unitModalForm) return;
+
+  unitModalIdInput.value = unitId || "";
+  unitModalNameInput.value = data?.nombreUnidad || "";
+  unitModalTypeSelect.value = data?.tipoUnidad || "departamento";
+  unitModalStatusSelect.value = data?.estado || "libre";
+  unitModalElectricInput.value = data?.codigoLuz || "";
+  if (unitModalBuildingNameLabel) {
+    unitModalBuildingNameLabel.textContent = selectedBuildingName || "Inmueble actual";
+  }
+
+  unitModal.classList.add("visible");
+}
+
+function closeUnitModal() {
+  if (!unitModal) return;
+  unitModal.classList.remove("visible");
+}
+
+function openTenantModal(tenantId, data) {
+  if (!tenantModal || !tenantModalForm) return;
+
+  tenantModalIdInput.value = tenantId || "";
+  tenantModalNameInput.value = data?.nombre || "";
+  tenantModalDocInput.value = data?.documento || "";
+  tenantModalPhoneInput.value = data?.telefono || "";
+  tenantModalEmailInput.value = data?.email || "";
+  tenantModalStartInput.value = data?.fechaInicio || "";
+  tenantModalEndInput.value = data?.fechaFin || "";
+  tenantModalRentInput.value =
+    data?.montoAlquiler != null ? String(data.montoAlquiler) : "";
+  tenantModalNotesInput.value = data?.notasContrato || "";
+  if (tenantModalUnitNameLabel) {
+    tenantModalUnitNameLabel.textContent = selectedUnitName || "Unidad actual";
+  }
+
+  tenantModal.classList.add("visible");
+}
+
+function closeTenantModal() {
+  if (!tenantModal) return;
+  tenantModal.classList.remove("visible");
+}
+
+// Listeners cerrar/cancelar modales
+if (buildingServicesCloseBtn) {
+  buildingServicesCloseBtn.addEventListener("click", () => closeBuildingServicesModal());
+}
+if (buildingServicesCancelBtn) {
+  buildingServicesCancelBtn.addEventListener("click", () => closeBuildingServicesModal());
+}
+if (buildingMapCloseBtn) {
+  buildingMapCloseBtn.addEventListener("click", () => closeBuildingMapModal());
+}
+if (buildingMapCancelBtn) {
+  buildingMapCancelBtn.addEventListener("click", () => closeBuildingMapModal());
+}
+if (unitModalCloseBtn) {
+  unitModalCloseBtn.addEventListener("click", () => closeUnitModal());
+}
+if (unitModalCancelBtn) {
+  unitModalCancelBtn.addEventListener("click", () => closeUnitModal());
+}
+if (tenantModalCloseBtn) {
+  tenantModalCloseBtn.addEventListener("click", () => closeTenantModal());
+}
+if (tenantModalCancelBtn) {
+  tenantModalCancelBtn.addEventListener("click", () => closeTenantModal());
+}
+
+// Input de URL de mapa reactivo
+if (modalMapsUrlInput) {
+  modalMapsUrlInput.addEventListener("input", (e) => {
+    updateMapPreview(e.target.value);
+  });
+}
+
+// ========================= RESUMEN DE EDIFICIO =========================
+async function actualizarResumenEdificio() {
+  // Si no hay edificio seleccionado
+  if (!selectedBuildingId || !selectedBuildingData) {
+    // Resumen principal
+    if (buildingSummarySection) buildingSummarySection.classList.add("hidden");
+    if (summaryBuildingName) summaryBuildingName.textContent = "Ninguno";
+    if (summaryBuildingType) summaryBuildingType.textContent = "—";
+    if (summaryBuildingAddress) summaryBuildingAddress.textContent = "—";
+    if (summaryWaterCode) summaryWaterCode.textContent = "—";
+    if (summaryInternetCode) summaryInternetCode.textContent = "—";
+    if (summaryInternetCompany) summaryInternetCompany.textContent = "—";
+    if (summaryInternetPrice) summaryInternetPrice.textContent = "—";
+    if (summaryGasCode) summaryGasCode.textContent = "—";
+    if (summaryMapsUrl) summaryMapsUrl.textContent = "—";
+    if (summaryStaffCount) summaryStaffCount.textContent = "—";
+
+    // Resumen en Unidades
+    if (unitsSummaryBuildingName) unitsSummaryBuildingName.textContent = "Ninguno";
+    if (unitsSummaryBuildingType) unitsSummaryBuildingType.textContent = "—";
+    if (unitsSummaryBuildingAddress) unitsSummaryBuildingAddress.textContent = "—";
+    if (unitsSummaryWaterCode) unitsSummaryWaterCode.textContent = "—";
+    if (unitsSummaryInternetCode) unitsSummaryInternetCode.textContent = "—";
+    if (unitsSummaryInternetCompany) unitsSummaryInternetCompany.textContent = "—";
+    if (unitsSummaryInternetPrice) unitsSummaryInternetPrice.textContent = "—";
+    if (unitsSummaryGasCode) unitsSummaryGasCode.textContent = "—";
+    if (unitsSummaryMapsUrl) unitsSummaryMapsUrl.textContent = "—";
+    if (unitsSummaryStaff) unitsSummaryStaff.textContent = "—";
+    return;
+  }
+
+  const b = selectedBuildingData;
+
+  // Principal
+  if (buildingSummarySection) buildingSummarySection.classList.remove("hidden");
+  if (summaryBuildingName) summaryBuildingName.textContent = b.nombre || "Sin nombre";
+  if (summaryBuildingType) summaryBuildingType.textContent = b.tipo || "—";
+  if (summaryBuildingAddress) summaryBuildingAddress.textContent = b.direccion || "—";
+  if (summaryWaterCode) summaryWaterCode.textContent = b.codigoAgua || "—";
+  if (summaryInternetCode) summaryInternetCode.textContent = b.codigoInternet || "—";
+  if (summaryInternetCompany)
+    summaryInternetCompany.textContent = b.empresaInternet || "—";
+  if (summaryInternetPrice) {
+    if (b.internetPrice != null && b.internetPrice !== "") {
+      summaryInternetPrice.textContent = Number(b.internetPrice).toFixed(2);
+    } else {
+      summaryInternetPrice.textContent = "—";
+    }
+  }
+  if (summaryGasCode) summaryGasCode.textContent = b.codigoGas || "—";
+  if (summaryMapsUrl) summaryMapsUrl.textContent = b.mapsUrl || "—";
+
+  // Unidades
+  if (unitsSummaryBuildingName) unitsSummaryBuildingName.textContent = b.nombre || "Sin nombre";
+  if (unitsSummaryBuildingType) unitsSummaryBuildingType.textContent = b.tipo || "—";
+  if (unitsSummaryBuildingAddress) unitsSummaryBuildingAddress.textContent = b.direccion || "—";
+  if (unitsSummaryWaterCode) unitsSummaryWaterCode.textContent = b.codigoAgua || "—";
+  if (unitsSummaryInternetCode) unitsSummaryInternetCode.textContent = b.codigoInternet || "—";
+  if (unitsSummaryInternetCompany)
+    unitsSummaryInternetCompany.textContent = b.empresaInternet || "—";
+  if (unitsSummaryInternetPrice) {
+    if (b.internetPrice != null && b.internetPrice !== "") {
+      unitsSummaryInternetPrice.textContent = Number(b.internetPrice).toFixed(2);
+    } else {
+      unitsSummaryInternetPrice.textContent = "—";
+    }
+  }
+  if (unitsSummaryGasCode) unitsSummaryGasCode.textContent = b.codigoGas || "—";
+  if (unitsSummaryMapsUrl) unitsSummaryMapsUrl.textContent = b.mapsUrl || "—";
+
+  // Contar personal (colección staffRecords)
+  let staffTexto = "—";
+  try {
+    const qStaff = query(
+      collection(db, "staffRecords"),
+      where("buildingId", "==", selectedBuildingId)
+    );
+    const snapStaff = await getDocs(qStaff);
+    const n = snapStaff.size;
+    staffTexto =
+      n === 0 ? "Sin personal registrado" : `${n} persona${n > 1 ? "s" : ""}`;
+  } catch (err) {
+    console.error("Error obteniendo personal del edificio:", err);
+  }
+
+  if (summaryStaffCount) summaryStaffCount.textContent = staffTexto;
+  if (unitsSummaryStaff) unitsSummaryStaff.textContent = staffTexto;
+}
+
+// Botones "Ver mapa" de los resúmenes
+if (summaryOpenMapBtn) {
+  summaryOpenMapBtn.addEventListener("click", () => {
+    if (!selectedBuildingId || !selectedBuildingData) {
+      alert("Primero selecciona un inmueble.");
+      return;
+    }
+    openMapForBuilding(selectedBuildingId, selectedBuildingData);
+  });
+}
+if (unitsSummaryOpenMapBtn) {
+  unitsSummaryOpenMapBtn.addEventListener("click", () => {
+    if (!selectedBuildingId || !selectedBuildingData) {
+      alert("Primero selecciona un inmueble.");
+      return;
+    }
+    openMapForBuilding(selectedBuildingId, selectedBuildingData);
+  });
+}
+
+// ========================= EDIFICIOS =========================
 async function cargarEdificios() {
   buildingList.innerHTML = "";
 
@@ -146,123 +531,166 @@ async function cargarEdificios() {
     const codigoInternetTexto = data.codigoInternet ? ` - Internet: ${data.codigoInternet}` : "";
     const codigoGasTexto = data.codigoGas ? ` - Gas: ${data.codigoGas}` : "";
     const empresaInternetTexto = data.empresaInternet ? ` - Prov: ${data.empresaInternet}` : "";
+    const precioInternetTexto =
+      data.internetPrice != null && data.internetPrice !== ""
+        ? ` - Internet $: ${Number(data.internetPrice).toFixed(2)}`
+        : "";
+    const mapsTexto = data.mapsUrl ? " - Mapa ✓" : "";
 
     const mainSpan = document.createElement("span");
     mainSpan.textContent =
       `${data.nombre} (${data.tipo}) - ${data.direccion || "Sin dirección"}` +
-      `${codigoAguaTexto}${codigoInternetTexto}${codigoGasTexto}${empresaInternetTexto}`;
+      `${codigoAguaTexto}${codigoInternetTexto}${codigoGasTexto}${empresaInternetTexto}${precioInternetTexto}${mapsTexto}`;
     mainSpan.style.cursor = "pointer";
     mainSpan.addEventListener("click", () => {
-      seleccionarEdificio(docSnap.id, data.nombre);
+      seleccionarEdificio(docSnap.id, data);
     });
     li.appendChild(mainSpan);
 
-    // Botón "Personal" con icono
+    // Botón PERSONAL
     const staffBtn = document.createElement("button");
     staffBtn.type = "button";
     staffBtn.className = "btn btn-info btn-xs";
     staffBtn.innerHTML = `
-      <span class="material-symbols-outlined">engineering</span>
+      <span class="material-symbols-outlined">group</span>
       <span class="btn-label">Personal</span>
     `;
     staffBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      seleccionarEdificioParaPersonal(docSnap.id, data.nombre);
+      seleccionarEdificioParaPersonal(docSnap.id, data);
     });
     li.appendChild(staffBtn);
 
-    // Botón "Editar servicios" con icono
+    // Botón SERVICIOS
     const editBtn = document.createElement("button");
     editBtn.type = "button";
-    editBtn.className = "btn btn-outline btn-xs";
+    editBtn.className = "btn btn-warning btn-xs";
     editBtn.innerHTML = `
       <span class="material-symbols-outlined">tune</span>
       <span class="btn-label">Servicios</span>
     `;
-    editBtn.addEventListener("click", async (e) => {
+    editBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      await editarEdificioServicios(docSnap.id, data);
+      openBuildingServicesModal(docSnap.id, data);
     });
     li.appendChild(editBtn);
+
+    // Botón MAPA
+    const mapBtn = document.createElement("button");
+    mapBtn.type = "button";
+    mapBtn.className = "btn btn-outline btn-xs";
+    mapBtn.innerHTML = `
+      <span class="material-symbols-outlined">map</span>
+      <span class="btn-label">Mapa</span>
+    `;
+    mapBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openMapForBuilding(docSnap.id, data);
+    });
+    li.appendChild(mapBtn);
 
     buildingList.appendChild(li);
   });
 }
 
-function seleccionarEdificioParaPersonal(id, nombre) {
-  selectedBuildingId = id;
-  selectedBuildingName = nombre;
+
+
+function seleccionarEdificioParaPersonal(docSnapId, data) {
+  selectedBuildingId = docSnapId;
+  selectedBuildingName = data.nombre;
+  selectedBuildingData = data;
 
   if (selectedBuildingLabel) {
-    selectedBuildingLabel.textContent = nombre;
+    selectedBuildingLabel.textContent = selectedBuildingName;
+  }
+  if (staffBuildingLabel) {
+    staffBuildingLabel.textContent = selectedBuildingName;
+  }
+  if (currentBuildingHidden) {
+    currentBuildingHidden.value = docSnapId;
+    currentBuildingHidden.dispatchEvent(new Event("change"));
   }
 
+  actualizarResumenEdificio();
+}
+
+function seleccionarEdificio(id, buildingData) {
+  // Guardar selección global como ya lo tenías
+  selectedBuildingId = id;
+  selectedBuildingData = buildingData || null;
+  selectedBuildingName = buildingData?.nombre || null;
+
+  if (selectedBuildingLabel) {
+    selectedBuildingLabel.textContent = selectedBuildingName || "Ninguno";
+  }
+
+  // ===== NUEVO: sincronizar con el módulo de PERSONAL =====
   const staffBuildingLabel = document.getElementById("staff-building-label");
   if (staffBuildingLabel) {
-    staffBuildingLabel.textContent = nombre;
+    staffBuildingLabel.textContent = selectedBuildingName || "Ninguno";
   }
 
   const currentBuildingHidden = document.getElementById("current-building-id");
   if (currentBuildingHidden) {
     currentBuildingHidden.value = id;
+    // Disparamos el evento para que staff.js cargue el personal del edificio
     currentBuildingHidden.dispatchEvent(new Event("change"));
   }
+
+  // También limpiamos la unidad actual en staff (por si acaso)
+  const currentUnitHidden = document.getElementById("current-unit-id");
+  if (currentUnitHidden) {
+    currentUnitHidden.value = "";
+    currentUnitHidden.dispatchEvent(new Event("change"));
+  }
+  // ========================================================
+
+  // Cambiar a pestaña Unidades (como ya lo hacías)
+  const tabUnidades = document.getElementById("tab-unidades");
+  if (tabUnidades) tabUnidades.checked = true;
+
+  // Reset unidad / inquilinos / recibos (igual que antes)
+  selectedUnitId = null;
+  selectedUnitName = null;
+  selectedUnitStatus = null;
+  if (selectedUnitLabel) selectedUnitLabel.textContent = "Ninguna";
+  tenantList.innerHTML = "";
+  setTenantFormEnabled(false);
+
+  activeTenantId = null;
+  activeTenantName = null;
+  invoiceUnitLabel.textContent = "Ninguna";
+  invoiceTenantLabel.textContent = "Ninguno";
+  invoiceList.innerHTML = "";
+  setInvoiceFormEnabled(false);
+
+  // Esto sigue igual: actualiza TODOS tus resúmenes
+  actualizarResumenEdificio();
+
+  // Cargar unidades del edificio seleccionado
+  cargarUnidades(id);
 }
 
-async function editarEdificioServicios(id, dataActual) {
-  const nuevoCodigoAgua = prompt(
-    "Código medidor de agua:",
-    dataActual.codigoAgua || ""
-  );
-  if (nuevoCodigoAgua === null) return;
 
-  const nuevoCodigoInternet = prompt(
-    "Código internet (edificio):",
-    dataActual.codigoInternet || ""
-  );
-  if (nuevoCodigoInternet === null) return;
-
-  const nuevaEmpresaInternet = prompt(
-    "Empresa / proveedor de internet:",
-    dataActual.empresaInternet || ""
-  );
-  if (nuevaEmpresaInternet === null) return;
-
-  const nuevoCodigoGas = prompt(
-    "Código medidor de gas:",
-    dataActual.codigoGas || ""
-  );
-  if (nuevoCodigoGas === null) return;
-
-  const buildingRef = doc(db, "buildings", id);
-  await updateDoc(buildingRef, {
-    codigoAgua: nuevoCodigoAgua,
-    codigoInternet: nuevoCodigoInternet,
-    empresaInternet: nuevaEmpresaInternet,
-    codigoGas: nuevoCodigoGas
-  });
-
-  await cargarEdificios();
-}
-
+// Guardar nuevo edificio
 buildingForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const nombre = buildingNameInput.value.trim();
   const tipo = buildingTypeSelect.value;
   const direccion = buildingAddressInput.value.trim();
-  const codigoAgua = buildingWaterMeterInput
-    ? buildingWaterMeterInput.value.trim()
-    : "";
-  const codigoInternet = buildingInternetCodeInput
-    ? buildingInternetCodeInput.value.trim()
-    : "";
-  const empresaInternet = buildingInternetCompanyInput
-    ? buildingInternetCompanyInput.value.trim()
-    : "";
-  const codigoGas = buildingGasCodeInput
-    ? buildingGasCodeInput.value.trim()
-    : "";
+  const codigoAgua = buildingWaterMeterInput ? buildingWaterMeterInput.value.trim() : "";
+  const codigoInternet = buildingInternetCodeInput ? buildingInternetCodeInput.value.trim() : "";
+  const empresaInternet = buildingInternetCompanyInput ? buildingInternetCompanyInput.value.trim() : "";
+  const codigoGas = buildingGasCodeInput ? buildingGasCodeInput.value.trim() : "";
+  const internetPriceStr = buildingInternetPriceInput ? buildingInternetPriceInput.value.trim() : "";
+  const mapsUrl = buildingMapsUrlInput ? buildingMapsUrlInput.value.trim() : "";
+
+  let internetPrice = null;
+  if (internetPriceStr) {
+    const n = parseFloat(internetPriceStr);
+    if (!isNaN(n) && n >= 0) internetPrice = n;
+  }
 
   if (!nombre) return;
 
@@ -287,6 +715,8 @@ buildingForm.addEventListener("submit", async (e) => {
     codigoInternet,
     empresaInternet,
     codigoGas,
+    internetPrice,
+    mapsUrl,
     creadoEn: new Date()
   });
 
@@ -296,39 +726,83 @@ buildingForm.addEventListener("submit", async (e) => {
   if (buildingInternetCodeInput) buildingInternetCodeInput.value = "";
   if (buildingInternetCompanyInput) buildingInternetCompanyInput.value = "";
   if (buildingGasCodeInput) buildingGasCodeInput.value = "";
+  if (buildingInternetPriceInput) buildingInternetPriceInput.value = "";
+  if (buildingMapsUrlInput) buildingMapsUrlInput.value = "";
+
   await cargarEdificios();
 });
 
-function seleccionarEdificio(id, nombre) {
-  selectedBuildingId = id;
-  selectedBuildingName = nombre;
-  if (selectedBuildingLabel) {
-    selectedBuildingLabel.textContent = nombre;
-  }
+// Guardar servicios desde modal
+if (buildingServicesForm) {
+  buildingServicesForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const tabUnidades = document.getElementById("tab-unidades");
-  if (tabUnidades) tabUnidades.checked = true;
+    const id = modalBuildingIdInput.value;
+    if (!id) return;
 
-  selectedUnitId = null;
-  selectedUnitName = null;
-  selectedUnitStatus = null;
-  if (selectedUnitLabel) {
-    selectedUnitLabel.textContent = "Ninguna";
-  }
-  tenantList.innerHTML = "";
-  setTenantFormEnabled(false);
+    const codigoAgua = modalWaterCodeInput.value.trim();
+    const codigoInternet = modalInternetCodeInput.value.trim();
+    const empresaInternet = modalInternetCompanyInput.value.trim();
+    const gasCode = modalGasCodeInput.value.trim();
+    const internetPriceStr = modalInternetPriceInput.value.trim();
 
-  activeTenantId = null;
-  activeTenantName = null;
-  invoiceUnitLabel.textContent = "Ninguna";
-  invoiceTenantLabel.textContent = "Ninguno";
-  invoiceList.innerHTML = "";
-  setInvoiceFormEnabled(false);
+    let internetPrice = null;
+    if (internetPriceStr) {
+      const n = parseFloat(internetPriceStr);
+      if (!isNaN(n) && n >= 0) internetPrice = n;
+    }
 
-  cargarUnidades(id);
+    const buildingRef = doc(db, "buildings", id);
+    await updateDoc(buildingRef, {
+      codigoAgua,
+      codigoInternet,
+      empresaInternet,
+      codigoGas: gasCode,
+      internetPrice
+    });
+
+    // Actualizar estado local si es el edificio seleccionado
+    if (selectedBuildingId === id && selectedBuildingData) {
+      selectedBuildingData = {
+        ...selectedBuildingData,
+        codigoAgua,
+        codigoInternet,
+        empresaInternet,
+        codigoGas: gasCode,
+        internetPrice
+      };
+      await actualizarResumenEdificio();
+    }
+
+    closeBuildingServicesModal();
+    await cargarEdificios();
+  });
 }
 
-// ===== UNIDADES =====
+// Guardar mapa desde modal
+if (buildingMapForm) {
+  buildingMapForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = modalMapBuildingIdInput.value;
+    if (!id) return;
+
+    const mapsUrl = modalMapsUrlInput.value.trim();
+
+    const buildingRef = doc(db, "buildings", id);
+    await updateDoc(buildingRef, { mapsUrl });
+
+    if (selectedBuildingId === id && selectedBuildingData) {
+      selectedBuildingData = { ...selectedBuildingData, mapsUrl };
+      await actualizarResumenEdificio();
+    }
+
+    closeBuildingMapModal();
+    await cargarEdificios();
+  });
+}
+
+// ========================= UNIDADES =========================
 async function cargarUnidades(buildingId) {
   unitList.innerHTML = "";
 
@@ -362,10 +836,9 @@ async function cargarUnidades(buildingId) {
     });
     li.appendChild(infoSpan);
 
-    // Botón "Editar" unidad con icono
     const editBtn = document.createElement("button");
     editBtn.type = "button";
-    editBtn.className = "btn btn-outline btn-xs";
+    editBtn.className = "btn btn-info btn-xs";
     editBtn.innerHTML = `
       <span class="material-symbols-outlined">edit</span>
       <span class="btn-label">Editar</span>
@@ -380,47 +853,38 @@ async function cargarUnidades(buildingId) {
   });
 }
 
-async function editarUnidad(unitId, dataActual) {
+function editarUnidad(unitId, dataActual) {
   if (!selectedBuildingId) {
     alert("Primero selecciona un inmueble.");
     return;
   }
+  openUnitModal(unitId, dataActual);
+}
 
-  const nuevoNombre = prompt(
-    "Nuevo nombre o número de unidad:",
-    dataActual.nombreUnidad || ""
-  );
-  if (nuevoNombre === null) return;
-  const nombreTrim = nuevoNombre.trim();
-  if (!nombreTrim) {
-    alert("El nombre de la unidad no puede estar vacío.");
-    return;
-  }
+// Guardar cambios de unidad desde modal
+if (unitModalForm) {
+  unitModalForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const nuevoTipo = prompt(
-    "Tipo de unidad (departamento / habitacion / casa completa):",
-    dataActual.tipoUnidad || ""
-  );
-  if (nuevoTipo === null) return;
-  const tipoTrim = nuevoTipo.trim() || dataActual.tipoUnidad;
+    if (!selectedBuildingId) {
+      alert("Primero selecciona un inmueble.");
+      return;
+    }
 
-  const nuevoEstado = prompt(
-    'Estado (libre / ocupado):',
-    dataActual.estado || "libre"
-  );
-  if (nuevoEstado === null) return;
-  const estadoTrim =
-    (nuevoEstado.trim().toLowerCase() === "ocupado") ? "ocupado" : "libre";
+    const unitId = unitModalIdInput.value;
+    const nuevoNombre = unitModalNameInput.value.trim();
+    const nuevoTipo = unitModalTypeSelect.value || "departamento";
+    const nuevoEstado = unitModalStatusSelect.value || "libre";
+    const nuevoCodLuz = unitModalElectricInput.value.trim();
 
-  const nuevoCodLuz = prompt(
-    "Código de medidor de luz:",
-    dataActual.codigoLuz || ""
-  );
-  if (nuevoCodLuz === null) return;
-  const codLuzTrim = nuevoCodLuz.trim();
+    if (!nuevoNombre) {
+      alert("El nombre de la unidad no puede estar vacío.");
+      return;
+    }
 
-  const nombreLower = nombreTrim.toLowerCase();
-  if (nombreLower !== dataActual.nombreUnidadLower) {
+    const nombreLower = nuevoNombre.toLowerCase();
+
+    // Validar duplicados
     const qDup = query(
       collection(db, "units"),
       where("buildingId", "==", selectedBuildingId),
@@ -435,28 +899,33 @@ async function editarUnidad(unitId, dataActual) {
       alert("Ya existe otra unidad con ese nombre en este inmueble.");
       return;
     }
-  }
 
-  const unitRef = doc(db, "units", unitId);
-  await updateDoc(unitRef, {
-    nombreUnidad: nombreTrim,
-    nombreUnidadLower: nombreLower,
-    tipoUnidad: tipoTrim,
-    estado: estadoTrim,
-    codigoLuz: codLuzTrim
+    const estadoTrim =
+      nuevoEstado.trim().toLowerCase() === "ocupado" ? "ocupado" : "libre";
+
+    const unitRef = doc(db, "units", unitId);
+    await updateDoc(unitRef, {
+      nombreUnidad: nuevoNombre,
+      nombreUnidadLower: nombreLower,
+      tipoUnidad: nuevoTipo,
+      estado: estadoTrim,
+      codigoLuz: nuevoCodLuz
+    });
+
+    if (selectedUnitId === unitId) {
+      selectedUnitName = nuevoNombre;
+      selectedUnitStatus = estadoTrim;
+      const estadoTexto = estadoTrim === "ocupado" ? "OCUPADO" : "LIBRE";
+      selectedUnitLabel.textContent = `${nuevoNombre} (${estadoTexto})`;
+      invoiceUnitLabel.textContent = nuevoNombre;
+    }
+
+    closeUnitModal();
+    await cargarUnidades(selectedBuildingId);
   });
-
-  if (selectedUnitId === unitId) {
-    selectedUnitName = nombreTrim;
-    selectedUnitStatus = estadoTrim;
-    const estadoTexto = estadoTrim === "ocupado" ? "OCUPADO" : "LIBRE";
-    selectedUnitLabel.textContent = `${nombreTrim} (${estadoTexto})`;
-    invoiceUnitLabel.textContent = nombreTrim;
-  }
-
-  await cargarUnidades(selectedBuildingId);
 }
 
+// Crear nueva unidad
 unitForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -468,9 +937,7 @@ unitForm.addEventListener("submit", async (e) => {
   const nombreUnidad = unitNameInput.value.trim();
   const tipoUnidad = unitTypeSelect.value;
   const estado = unitStatusSelect.value;
-  const codigoLuz = unitElectricCodeInput
-    ? unitElectricCodeInput.value.trim()
-    : "";
+  const codigoLuz = unitElectricCodeInput ? unitElectricCodeInput.value.trim() : "";
 
   if (!nombreUnidad) return;
 
@@ -513,11 +980,9 @@ function seleccionarUnidad(id, nombreUnidad, estado) {
   const tabInquilinos = document.getElementById("tab-inquilinos");
   if (tabInquilinos) tabInquilinos.checked = true;
 
-  const staffUnitLabel = document.getElementById("staff-unit-label");
   if (staffUnitLabel) {
     staffUnitLabel.textContent = `${nombreUnidad} (${estadoTexto})`;
   }
-  const currentUnitHidden = document.getElementById("current-unit-id");
   if (currentUnitHidden) {
     currentUnitHidden.value = id;
     currentUnitHidden.dispatchEvent(new Event("change"));
@@ -540,7 +1005,7 @@ function seleccionarUnidad(id, nombreUnidad, estado) {
   cargarRecibos(id);
 }
 
-// ===== INQUILINOS =====
+// ========================= INQUILINOS =========================
 async function cargarInquilinos(unitId) {
   tenantList.innerHTML = "";
 
@@ -600,13 +1065,12 @@ async function cargarInquilinos(unitId) {
       cargarRecibos(unitId);
     });
 
-    // Botón "Ver recibos" con icono
     const viewBtn = document.createElement("button");
     viewBtn.type = "button";
-    viewBtn.className = "btn btn-info btn-xs";
+    viewBtn.className = "btn btn-outline btn-xs";
     viewBtn.innerHTML = `
       <span class="material-symbols-outlined">receipt_long</span>
-      <span class="btn-label">Recibos</span>
+      <span class="btn-label">Ver recibos</span>
     `;
     viewBtn.addEventListener("click", async (event) => {
       event.stopPropagation();
@@ -614,10 +1078,9 @@ async function cargarInquilinos(unitId) {
     });
     li.appendChild(viewBtn);
 
-    // Botón "Editar" inquilino con icono
     const editBtn = document.createElement("button");
     editBtn.type = "button";
-    editBtn.className = "btn btn-outline btn-xs";
+    editBtn.className = "btn btn-info btn-xs";
     editBtn.innerHTML = `
       <span class="material-symbols-outlined">edit</span>
       <span class="btn-label">Editar</span>
@@ -628,13 +1091,12 @@ async function cargarInquilinos(unitId) {
     });
     li.appendChild(editBtn);
 
-    // Botón "Rescindir contrato" con icono (solo si está activo)
     if (data.estado === "activo") {
       const rescBtn = document.createElement("button");
       rescBtn.type = "button";
       rescBtn.className = "btn btn-danger btn-xs";
       rescBtn.innerHTML = `
-        <span class="material-symbols-outlined">block</span>
+        <span class="material-symbols-outlined">do_not_disturb_on</span>
         <span class="btn-label">Rescindir</span>
       `;
       rescBtn.addEventListener("click", async (event) => {
@@ -671,76 +1133,58 @@ async function cargarInquilinos(unitId) {
 }
 
 async function editarInquilino(tenantId, dataActual) {
-  const nuevoNombre = prompt("Nombre completo:", dataActual.nombre || "");
-  if (nuevoNombre === null) return;
-  const nombreTrim = nuevoNombre.trim();
-  if (!nombreTrim) {
-    alert("El nombre no puede quedar vacío.");
-    return;
-  }
+  openTenantModal(tenantId, dataActual);
+}
 
-  const nuevoDoc = prompt("Documento / DNI:", dataActual.documento || "");
-  if (nuevoDoc === null) return;
-  const docTrim = nuevoDoc.trim();
+// Guardar cambios de inquilino desde modal
+if (tenantModalForm) {
+  tenantModalForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  const nuevoTel = prompt("Teléfono:", dataActual.telefono || "");
-  if (nuevoTel === null) return;
-  const telTrim = nuevoTel.trim();
+    const tenantId = tenantModalIdInput.value;
+    if (!tenantId) return;
 
-  const nuevoEmail = prompt("Email:", dataActual.email || "");
-  if (nuevoEmail === null) return;
-  const emailTrim = nuevoEmail.trim();
+    const nuevoNombre = tenantModalNameInput.value.trim();
+    if (!nuevoNombre) {
+      alert("El nombre no puede quedar vacío.");
+      return;
+    }
 
-  const nuevaFechaInicio = prompt(
-    "Fecha inicio (YYYY-MM-DD):",
-    dataActual.fechaInicio || ""
-  );
-  if (nuevaFechaInicio === null) return;
-  const fiTrim = nuevaFechaInicio.trim();
+    const nuevoDoc = tenantModalDocInput.value.trim();
+    const nuevoTel = tenantModalPhoneInput.value.trim();
+    const nuevoEmail = tenantModalEmailInput.value.trim();
+    const fiTrim = tenantModalStartInput.value.trim();
+    const ffTrim = tenantModalEndInput.value.trim();
 
-  const nuevaFechaFin = prompt(
-    "Fecha fin (YYYY-MM-DD):",
-    dataActual.fechaFin || ""
-  );
-  if (nuevaFechaFin === null) return;
-  const ffTrim = nuevaFechaFin.trim();
+    const montoStr = tenantModalRentInput.value.trim();
+    const montoNum = parseFloat(montoStr);
+    if (isNaN(montoNum) || montoNum <= 0) {
+      alert("El monto de alquiler debe ser un número mayor a 0.");
+      return;
+    }
 
-  const montoStr = prompt(
-    "Monto alquiler mensual:",
-    dataActual.montoAlquiler != null ? String(dataActual.montoAlquiler) : ""
-  );
-  if (montoStr === null) return;
-  const montoNum = parseFloat(montoStr);
-  if (isNaN(montoNum) || montoNum <= 0) {
-    alert("El monto de alquiler debe ser un número mayor a 0.");
-    return;
-  }
+    const notasTrim = tenantModalNotesInput.value.trim();
 
-  const nuevasNotas = prompt(
-    "Notas del contrato:",
-    dataActual.notasContrato || ""
-  );
-  if (nuevasNotas === null) return;
-  const notasTrim = nuevasNotas.trim();
+    const tenantRef = doc(db, "tenants", tenantId);
+    await updateDoc(tenantRef, {
+      nombre: nuevoNombre,
+      documento: nuevoDoc,
+      telefono: nuevoTel,
+      email: nuevoEmail,
+      fechaInicio: fiTrim,
+      fechaFin: ffTrim,
+      montoAlquiler: montoNum,
+      notasContrato: notasTrim
+    });
 
-  const tenantRef = doc(db, "tenants", tenantId);
-  await updateDoc(tenantRef, {
-    nombre: nombreTrim,
-    documento: docTrim,
-    telefono: telTrim,
-    email: emailTrim,
-    fechaInicio: fiTrim,
-    fechaFin: ffTrim,
-    montoAlquiler: montoNum,
-    notasContrato: notasTrim
+    if (activeTenantId === tenantId) {
+      activeTenantName = nuevoNombre;
+      invoiceTenantLabel.textContent = nuevoNombre;
+    }
+
+    closeTenantModal();
+    await cargarInquilinos(selectedUnitId);
   });
-
-  if (activeTenantId === tenantId) {
-    activeTenantName = nombreTrim;
-    invoiceTenantLabel.textContent = nombreTrim;
-  }
-
-  await cargarInquilinos(selectedUnitId);
 }
 
 async function rescindirContrato(tenantId, unitId) {
@@ -768,6 +1212,7 @@ async function rescindirContrato(tenantId, unitId) {
   await cargarUnidades(selectedBuildingId);
 }
 
+// Alta de nuevo inquilino (formulario principal)
 tenantForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -866,7 +1311,7 @@ tenantForm.addEventListener("submit", async (e) => {
   await cargarUnidades(selectedBuildingId);
 });
 
-// ===== RECIBOS =====
+// ========================= RECIBOS =========================
 async function cargarRecibos(unitId) {
   invoiceList.innerHTML = "";
 
@@ -904,10 +1349,9 @@ async function cargarRecibos(unitId) {
     )} - Estado: ${estado.toUpperCase()}` + (notasRecibo ? ` - Notas: ${notasRecibo}` : "");
     li.appendChild(label);
 
-    // Botón PDF con icono
     const pdfBtn = document.createElement("button");
     pdfBtn.type = "button";
-    pdfBtn.className = "btn btn-info btn-xs";
+    pdfBtn.className = "btn btn-outline btn-xs";
     pdfBtn.innerHTML = `
       <span class="material-symbols-outlined">picture_as_pdf</span>
       <span class="btn-label">PDF</span>
@@ -937,13 +1381,12 @@ async function cargarRecibos(unitId) {
     li.appendChild(pdfBtn);
 
     if (estado === "pendiente") {
-      // Botón "Marcar pagado" con icono
       const payBtn = document.createElement("button");
       payBtn.type = "button";
       payBtn.className = "btn btn-success btn-xs";
       payBtn.innerHTML = `
-        <span class="material-symbols-outlined">paid</span>
-        <span class="btn-label">Pagado</span>
+        <span class="material-symbols-outlined">done</span>
+        <span class="btn-label">Marcar pagado</span>
       `;
       payBtn.addEventListener("click", async () => {
         const ok = confirm("¿Marcar este recibo como PAGADO?");
@@ -1016,10 +1459,9 @@ async function verRecibosDeTenant(tenantId, tenantNombre) {
       (notasRecibo ? ` - Notas: ${notasRecibo}` : "");
     li.appendChild(label);
 
-    // Botón PDF con icono
     const pdfBtn = document.createElement("button");
     pdfBtn.type = "button";
-    pdfBtn.className = "btn btn-info btn-xs";
+    pdfBtn.className = "btn btn-outline btn-xs";
     pdfBtn.innerHTML = `
       <span class="material-symbols-outlined">picture_as_pdf</span>
       <span class="btn-label">PDF</span>
@@ -1053,8 +1495,8 @@ async function verRecibosDeTenant(tenantId, tenantNombre) {
       payBtn.type = "button";
       payBtn.className = "btn btn-success btn-xs";
       payBtn.innerHTML = `
-        <span class="material-symbols-outlined">paid</span>
-        <span class="btn-label">Pagado</span>
+        <span class="material-symbols-outlined">done</span>
+        <span class="btn-label">Marcar pagado</span>
       `;
       payBtn.addEventListener("click", async () => {
         const ok = confirm("¿Marcar este recibo como PAGADO?");
@@ -1173,15 +1615,7 @@ invoiceForm.addEventListener("submit", async (e) => {
   await cargarRecibos(selectedUnitId);
 });
 
-// ===== PDF CONTRATO INQUILINO =====
-function formatearFechaISO(iso) {
-  if (!iso) return "";
-  const partes = iso.split("-");
-  if (partes.length !== 3) return iso;
-  const [y, m, d] = partes;
-  return `${d}/${m}/${y}`;
-}
-
+// ========================= PDF CONTRATO INQUILINO =========================
 function generarPdfContratoInquilino(data) {
   const docPdf = new jsPDF({
     unit: "mm",
@@ -1253,7 +1687,7 @@ function generarPdfContratoInquilino(data) {
   docPdf.save(fileName);
 }
 
-// ===== PDF RECIBO =====
+// ========================= PDF RECIBO =========================
 function generarPdfRecibo(data) {
   const docPdf = new jsPDF({
     unit: "mm",
@@ -1369,5 +1803,5 @@ function generarPdfRecibo(data) {
   docPdf.save(fileName);
 }
 
-// cargar edificios al inicio
+// ========================= INICIO =========================
 cargarEdificios();
